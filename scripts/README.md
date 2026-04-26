@@ -2,9 +2,23 @@
 
 `refresh.py` asks Claude (with the web_search server tool) to verify the current list price for every vendor tier in `vendors.json`. It prints a human-readable diff of proposed changes; it only writes back to `vendors.json` when you pass `--apply`.
 
-## fetch-logos.py — vendor logo generator
+## fetch-app-icons.py — App Store artwork
 
-Pulls monochrome SVGs from Simple Icons (CC0), forces a white fill, rasterizes to 256×256 PNGs into `../logos/<vendor.id>.png`.
+Fetches the actual App Store icon for each vendor via the public iTunes Search API. Saves 512×512 JPEG payloads to `../logos/<vendor.id>.jpg`. These are the icons users already see on their phones, so the SubDrop dashboard feels like the real services.
+
+```bash
+python scripts/fetch-app-icons.py            # only fetch missing
+python scripts/fetch-app-icons.py --force    # refetch everything
+python scripts/fetch-app-icons.py --limit 5  # smoke-test
+```
+
+No external dependencies — pure stdlib. Per-vendor `SEARCH_OVERRIDES` and `COUNTRY_OVERRIDES` inside the script handle ambiguous matches (e.g. Crave is region-locked to the CA store).
+
+Vendors that don't have an App Store presence (`apple_arcade`, `icloud_plus`) are skip-listed and fall back to SF Symbol in the app.
+
+## fetch-logos.py — Simple Icons fallback (legacy)
+
+Pulls monochrome SVGs from Simple Icons (CC0), rasterizes to PNGs. Kept around in case we ever want monochrome silhouettes alongside the colored App Store icons.
 
 ```bash
 brew install cairo                                       # one-time, macOS only
@@ -17,7 +31,7 @@ DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib \
 
 The `DYLD_FALLBACK_LIBRARY_PATH` is needed on Apple Silicon so `cairocffi` can find Homebrew's libcairo. On Linux/CI no env var is needed (cairo is on the standard loader path).
 
-Vendors without a Simple Icons match are silently skipped; the app falls back to the SF Symbol named in `iconName`.
+Vendors without a Simple Icons match are silently skipped.
 
 ---
 
