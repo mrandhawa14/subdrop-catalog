@@ -2,6 +2,27 @@
 
 `refresh.py` asks Claude (with the web_search server tool) to verify the current list price for every vendor tier in `vendors.json`. It prints a human-readable diff of proposed changes; it only writes back to `vendors.json` when you pass `--apply`.
 
+## fetch-logos.py — vendor logo generator
+
+Pulls monochrome SVGs from Simple Icons (CC0), forces a white fill, rasterizes to 256×256 PNGs into `../logos/<vendor.id>.png`.
+
+```bash
+brew install cairo                                       # one-time, macOS only
+pip install -r scripts/requirements.txt
+DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib \
+    python scripts/fetch-logos.py            # only generate missing
+DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib \
+    python scripts/fetch-logos.py --force    # regenerate everything
+```
+
+The `DYLD_FALLBACK_LIBRARY_PATH` is needed on Apple Silicon so `cairocffi` can find Homebrew's libcairo. On Linux/CI no env var is needed (cairo is on the standard loader path).
+
+Vendors without a Simple Icons match are silently skipped; the app falls back to the SF Symbol named in `iconName`.
+
+---
+
+## refresh.py — price verification
+
 ## Run locally
 
 ```bash
