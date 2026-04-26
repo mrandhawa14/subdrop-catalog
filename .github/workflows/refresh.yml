@@ -1,0 +1,49 @@
+name: Catalog refresh
+
+# By default this workflow runs only on manual trigger so it never moves
+# money or opens PRs without an explicit decision. To enable a weekly
+# automated run, uncomment the `schedule:` block below.
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 9 * * 1'  # 09:00 UTC every Monday
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Run refresh
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/refresh.py --apply
+
+      - name: Open PR if catalog changed
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "Catalog refresh: proposed price updates"
+          title: "Catalog refresh: proposed price updates"
+          body: |
+            Automated proposal from `scripts/refresh.py`.
+
+            Each change was suggested by Claude after a web search of the
+            vendor's official pricing page. Review the diff carefully —
+            confidence levels and source URLs are noted in the run log
+            (Actions tab). Reject anything that looks wrong before merging.
+          branch: catalog-refresh/${{ github.run_number }}
+          delete-branch: true
+          add-paths: vendors.json

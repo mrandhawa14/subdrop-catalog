@@ -74,6 +74,12 @@ This catalog is solo-maintained today. Updates aim for ~weekly cadence on top ve
 
 Anyone is welcome to open a PR adding a vendor or correcting a price — please cite a public source (the vendor's own pricing page is best). Changes ship on merge to `main`.
 
+### Automated price-check helper
+
+`scripts/refresh.py` uses Claude with web search to verify current list prices. Run it locally for a dry-run, or trigger the GitHub Actions workflow (manual by default — uncomment the `schedule:` block in `.github/workflows/refresh.yml` to enable a weekly cron). See [`scripts/README.md`](./scripts/README.md) for usage.
+
+The workflow needs an `ANTHROPIC_API_KEY` repo secret and opens a PR when it finds proposed changes; nothing merges automatically.
+
 ## Hosting
 
 Served via GitHub Pages from `main`. The canonical URL is:
