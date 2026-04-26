@@ -2,21 +2,21 @@
 """
 SubDrop catalog refresh helper.
 
-Iterates every vendor tier in vendors.json, asks Claude (with the
-web_search server tool) to verify the current list price, and reports
-proposed changes. By default this is a dry-run — pass --apply to
-modify vendors.json in place.
+Iterates every vendor tier in vendors.json, asks Gemini (with Google
+Search grounding) to verify the current list price, and reports
+proposed changes. Dry-run by default; --apply mutates vendors.json
+in place.
 
 Usage:
-    export ANTHROPIC_API_KEY=sk-ant-...
+    export GEMINI_API_KEY=...
     python scripts/refresh.py             # dry-run, prints diff
     python scripts/refresh.py --apply     # writes changes to vendors.json
     python scripts/refresh.py --limit 5   # only check first 5 vendors
 
 Exit codes:
     0  no changes (or changes successfully applied with --apply)
-    1  applied no changes (with --apply when nothing differed)
-    2  changes detected (dry-run only — useful in CI to gate a PR)
+    1  --apply ran but applied nothing
+    2  dry-run found changes (used by CI to gate a PR)
     3  configuration / runtime error
 """
 
@@ -30,32 +30,30 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 try:
-    import anthropic
+    from google import genai
+    from google.genai import types
 except ImportError:
     print("error: install dependencies first → pip install -r scripts/requirements.txt",
           file=sys.stderr)
     sys.exit(3)
 
 
-# Sonnet 4.6 is the right cost/capability point for "verify a number, return JSON."
-# Bump to claude-opus-4-7 if you find Sonnet missing nuanced regional pricing.
-MODEL = "claude-sonnet-4-6"
-
-# Web search server tool — runs on Anthropic's side, no extra setup.
-WEB_SEARCH_TOOL = {"type": "web_search_20250305", "name": "web_search"}
+# Flash is plenty for "look up a number, return JSON" — fast, cheap, and
+# search-grounded. Bump to gemini-2.5-pro if you ever see Flash missing
+# nuanced regional pricing.
+MODEL = "gemini-2.5-flash"
 
 CATALOG_PATH = Path(__file__).resolve().parent.parent / "vendors.json"
 
-# How far new vs. old must differ (in currency units) before we propose a change.
-# 1¢ tolerance handles floating-point drift from the model's response parsing.
+# How far new vs. old must differ before we propose a change. 1¢ tolerance
+# absorbs floating-point noise from the model's response.
 CHANGE_THRESHOLD = 0.01
 
 
-def verify_tier(client: anthropic.Anthropic, vendor: dict, tier: dict) -> dict | None:
+def verify_tier(client, vendor: dict, tier: dict) -> dict | None:
     """
-    Asks Claude to look up the current list price for a vendor's tier.
-    Returns a change-proposal dict, or None if the price is unchanged or
-    we couldn't verify with confidence.
+    Asks Gemini to look up the current list price for one tier.
+    Returns a change-proposal dict, or None if unchanged or unverified.
     """
     region = tier.get("region", "US")
     currency = tier.get("currency", "USD")
@@ -67,9 +65,10 @@ def verify_tier(client: anthropic.Anthropic, vendor: dict, tier: dict) -> dict |
         f"Region: {region}\n"
         f"Currency: {currency}\n"
         f"Last known amount: {tier['amount']}\n\n"
-        f"Use web_search to find the OFFICIAL current list price for this exact "
-        f"tier in this region. Look at the vendor's own pricing page first "
-        f"(check the official domain, not third-party comparison sites).\n\n"
+        f"Use Google Search to find the OFFICIAL current list price for "
+        f"this exact tier in this region. Look at the vendor's own pricing "
+        f"page first (their official domain, not third-party comparison "
+        f"sites).\n\n"
         f"Return ONLY a single JSON object with these fields, nothing else:\n"
         f"  amount       — number, list price exclusive of tax\n"
         f"  currency     — must equal \"{currency}\"\n"
@@ -80,19 +79,19 @@ def verify_tier(client: anthropic.Anthropic, vendor: dict, tier: dict) -> dict |
     )
 
     try:
-        response = client.messages.create(
+        response = client.models.generate_content(
             model=MODEL,
-            max_tokens=1024,
-            tools=[WEB_SEARCH_TOOL],
-            messages=[{"role": "user", "content": prompt}],
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                tools=[types.Tool(google_search=types.GoogleSearch())],
+                temperature=0,
+            ),
         )
-    except anthropic.APIError as e:
+    except Exception as e:
         print(f"    ! API error: {e}", file=sys.stderr)
         return None
 
-    # Concatenate all text blocks; web_search results live in tool_use blocks
-    # and aren't user-facing — Claude's final text response is what we parse.
-    text = "".join(b.text for b in response.content if getattr(b, "type", None) == "text")
+    text = (response.text or "").strip()
     parsed = _extract_json(text)
     if not parsed:
         return None
@@ -103,7 +102,8 @@ def verify_tier(client: anthropic.Anthropic, vendor: dict, tier: dict) -> dict |
     new_amount = parsed.get("amount")
     returned_currency = parsed.get("currency")
 
-    # Validation: refuse to propose a change if currency drifted.
+    # Refuse to propose a change if currency drifted (search may have found
+    # the US price for a CA tier, etc.).
     if returned_currency != currency:
         return None
     if not isinstance(new_amount, (int, float)):
@@ -126,7 +126,18 @@ def verify_tier(client: anthropic.Anthropic, vendor: dict, tier: dict) -> dict |
 
 
 def _extract_json(text: str) -> dict | None:
-    """Pulls the first {...} block out of a model response."""
+    """Pulls the first {...} block out of a model response. Tolerates
+    Markdown fences (```json ... ```) the model sometimes wraps things in."""
+    # Strip a Markdown code fence if present.
+    if text.startswith("```"):
+        # remove leading fence line and trailing fence
+        lines = text.splitlines()
+        if lines and lines[0].startswith("```"):
+            lines = lines[1:]
+        if lines and lines[-1].startswith("```"):
+            lines = lines[:-1]
+        text = "\n".join(lines)
+
     start = text.find("{")
     end = text.rfind("}")
     if start == -1 or end < start:
@@ -161,9 +172,9 @@ def main() -> int:
                         help="Only check the first N vendors (useful for testing).")
     args = parser.parse_args()
 
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
     if not api_key:
-        print("error: ANTHROPIC_API_KEY not set", file=sys.stderr)
+        print("error: GEMINI_API_KEY (or GOOGLE_API_KEY) not set", file=sys.stderr)
         return 3
 
     if not CATALOG_PATH.exists():
@@ -171,7 +182,7 @@ def main() -> int:
         return 3
 
     catalog = json.loads(CATALOG_PATH.read_text())
-    client = anthropic.Anthropic(api_key=api_key)
+    client = genai.Client(api_key=api_key)
 
     vendors = catalog["vendors"]
     if args.limit:
@@ -187,8 +198,7 @@ def main() -> int:
             change = verify_tier(client, vendor, tier)
             if change:
                 proposals.append(change)
-                arrow = f"    ↑ {change['old_amount']:.2f} → {change['new_amount']:.2f} [{change['confidence']}]"
-                print(arrow, file=sys.stderr)
+                print(f"    ↑ {change['old_amount']:.2f} → {change['new_amount']:.2f} [{change['confidence']}]", file=sys.stderr)
                 if change["source"]:
                     print(f"      {change['source']}", file=sys.stderr)
 

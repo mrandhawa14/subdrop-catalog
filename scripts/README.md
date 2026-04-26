@@ -37,7 +37,7 @@ Vendors without a Simple Icons match are silently skipped.
 
 ## refresh.py — price verification
 
-## Run locally
+Uses Gemini 2.5 Flash with Google Search grounding to verify the current list price for every vendor tier in `vendors.json`.
 
 ```bash
 cd /path/to/subdrop-catalog
@@ -45,24 +45,24 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r scripts/requirements.txt
 
-export ANTHROPIC_API_KEY=sk-ant-...
-python scripts/refresh.py            # dry-run
-python scripts/refresh.py --limit 3  # smoke-test on 3 vendors
-python scripts/refresh.py --apply    # write changes to vendors.json
+export GEMINI_API_KEY=...                # or GOOGLE_API_KEY
+python scripts/refresh.py                # dry-run, prints diff
+python scripts/refresh.py --limit 3      # smoke-test 3 vendors
+python scripts/refresh.py --apply        # write changes to vendors.json
 ```
 
-After `--apply`, review the diff with `git diff vendors.json` and either commit or `git restore` if something looks wrong.
+After `--apply`, review with `git diff vendors.json` and either commit or `git restore` if anything looks off.
 
 ## Cost
 
-Roughly one Claude Sonnet 4.6 call per tier. With ~30 tiers and web_search enabled, expect well under $1 per full run.
+One Gemini 2.5 Flash call per tier with search grounding. ~30 tiers per full run; expect cents per run on the paid tier, free on the AI Studio free tier (subject to rate limits).
 
 ## What the script will and won't do
 
 - ✅ Verifies *list* prices (the number on the vendor's pricing page, exclusive of tax).
 - ✅ Refuses to propose a change if the model returns a different currency than the tier expects (guards against the model finding the US price for a CA tier).
 - ✅ Bumps `version` and `updated` only when changes are applied.
-- ❌ Doesn't touch tax, regional promotions, grandfathered prices, or the user's actual paid amount — those come from on-device sources (StoreKit, statement parsing) in the SubDrop app.
+- ❌ Doesn't touch tax, regional promotions, grandfathered prices, or the user's actual paid amount — those come from on-device sources (statement parsing, etc.) in the SubDrop app.
 - ❌ Doesn't update cancellation steps, retention warnings, or vendor metadata. Those need a human edit.
 - ❌ Doesn't fix entries where the tier `name` or `id` is ambiguous — review those by hand.
 
