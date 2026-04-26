@@ -1,0 +1,750 @@
+{
+  "schema": 1,
+  "version": 1,
+  "updated": "2026-04-25T00:00:00Z",
+  "vendors": [
+    {
+      "id": "netflix",
+      "name": "Netflix",
+      "aliases": ["NFLX", "Netflix Inc"],
+      "domain": "netflix.com",
+      "category": "Entertainment",
+      "tags": ["streaming", "video"],
+      "iconName": "play.rectangle.fill",
+      "colorHex": "#E50914",
+      "tiers": [
+        { "id": "standard_ca", "name": "Standard", "currency": "CAD", "amount": 16.49, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 0 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.netflix.com/cancelplan",
+        "steps": [
+          "Sign in at netflix.com",
+          "Account → Membership → Cancel Membership",
+          "Confirm cancellation"
+        ],
+        "retentionOffer": "May offer a discount or downgrade. Decline if you want to actually cancel.",
+        "estimatedMinutes": 3
+      }
+    },
+    {
+      "id": "spotify",
+      "name": "Spotify",
+      "aliases": ["Spotify Premium"],
+      "domain": "spotify.com",
+      "category": "Entertainment",
+      "tags": ["streaming", "music"],
+      "iconName": "music.note",
+      "colorHex": "#1DB954",
+      "tiers": [
+        { "id": "individual_ca", "name": "Premium Individual", "currency": "CAD", "amount": 11.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 30 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.spotify.com/account/subscription/",
+        "steps": [
+          "Sign in at spotify.com",
+          "Account → Available plans → Cancel Premium",
+          "Confirm — access continues until end of billing period"
+        ],
+        "retentionOffer": "May offer 3 months at a reduced rate.",
+        "estimatedMinutes": 2
+      }
+    },
+    {
+      "id": "disney_plus",
+      "name": "Disney+",
+      "aliases": ["Disney Plus"],
+      "domain": "disneyplus.com",
+      "category": "Entertainment",
+      "tags": ["streaming", "video"],
+      "iconName": "sparkles.tv",
+      "colorHex": "#113CCF",
+      "tiers": [
+        { "id": "standard_ca", "name": "Standard", "currency": "CAD", "amount": 11.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 7 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.disneyplus.com/account/subscription",
+        "steps": [
+          "Sign in at disneyplus.com",
+          "Account → Subscription → Cancel Subscription",
+          "Select reason and confirm"
+        ],
+        "retentionOffer": "May offer a free month or discount.",
+        "estimatedMinutes": 3
+      }
+    },
+    {
+      "id": "youtube_premium",
+      "name": "YouTube Premium",
+      "aliases": ["YouTube Music Premium"],
+      "domain": "youtube.com",
+      "category": "Entertainment",
+      "tags": ["streaming", "video", "music"],
+      "iconName": "play.rectangle.fill",
+      "colorHex": "#FF0000",
+      "tiers": [
+        { "id": "individual_ca", "name": "Individual", "currency": "CAD", "amount": 13.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 30 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.youtube.com/paid_memberships",
+        "steps": [
+          "Sign in at youtube.com",
+          "Open Paid Memberships",
+          "Select YouTube Premium → Manage → Deactivate"
+        ],
+        "retentionOffer": "May offer pause for up to 6 months instead of cancelling.",
+        "estimatedMinutes": 3
+      }
+    },
+    {
+      "id": "apple_tv_plus",
+      "name": "Apple TV+",
+      "aliases": ["Apple TV Plus"],
+      "domain": "tv.apple.com",
+      "category": "Entertainment",
+      "tags": ["streaming", "video"],
+      "iconName": "appletv",
+      "colorHex": "#000000",
+      "tiers": [
+        { "id": "standard_ca", "name": "Standard", "currency": "CAD", "amount": 12.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 7 },
+      "cancellation": {
+        "method": "app",
+        "url": "https://support.apple.com/en-us/118428",
+        "steps": [
+          "Settings → [your name] → Subscriptions",
+          "Tap Apple TV+ → Cancel Subscription",
+          "Confirm"
+        ],
+        "retentionOffer": "Apple typically does not offer retention discounts.",
+        "estimatedMinutes": 1
+      }
+    },
+    {
+      "id": "apple_music",
+      "name": "Apple Music",
+      "aliases": [],
+      "domain": "music.apple.com",
+      "category": "Entertainment",
+      "tags": ["streaming", "music"],
+      "iconName": "music.note.list",
+      "colorHex": "#FA2D48",
+      "tiers": [
+        { "id": "individual_ca", "name": "Individual", "currency": "CAD", "amount": 11.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 30 },
+      "cancellation": {
+        "method": "app",
+        "url": "https://support.apple.com/en-us/118428",
+        "steps": [
+          "Settings → [your name] → Subscriptions",
+          "Tap Apple Music → Cancel Subscription"
+        ],
+        "retentionOffer": "Apple typically does not offer retention discounts.",
+        "estimatedMinutes": 1
+      }
+    },
+    {
+      "id": "amazon_prime_video",
+      "name": "Amazon Prime Video",
+      "aliases": ["Prime Video"],
+      "domain": "primevideo.com",
+      "category": "Entertainment",
+      "tags": ["streaming", "video"],
+      "iconName": "play.tv",
+      "colorHex": "#00A8E1",
+      "tiers": [
+        { "id": "standalone_ca", "name": "Prime Video Standalone", "currency": "CAD", "amount": 9.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 30 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.amazon.ca/gp/primecentral",
+        "steps": [
+          "Sign in at amazon.ca",
+          "Open Manage Prime Video",
+          "End membership"
+        ],
+        "retentionOffer": "May offer 1–2 months free.",
+        "estimatedMinutes": 4
+      }
+    },
+    {
+      "id": "crave",
+      "name": "Crave",
+      "aliases": [],
+      "domain": "crave.ca",
+      "category": "Entertainment",
+      "tags": ["streaming", "video"],
+      "iconName": "tv",
+      "colorHex": "#0028F0",
+      "tiers": [
+        { "id": "standard_ca", "name": "Standard", "currency": "CAD", "amount": 19.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 7 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.crave.ca/account",
+        "steps": [
+          "Sign in at crave.ca",
+          "Account → Manage Subscription → Cancel"
+        ],
+        "estimatedMinutes": 3
+      }
+    },
+    {
+      "id": "audible",
+      "name": "Audible",
+      "aliases": [],
+      "domain": "audible.ca",
+      "category": "Entertainment",
+      "tags": ["audiobooks"],
+      "iconName": "headphones",
+      "colorHex": "#F8991D",
+      "tiers": [
+        { "id": "premium_plus_ca", "name": "Premium Plus", "currency": "CAD", "amount": 14.95, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 30 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.audible.ca/account/overview",
+        "steps": [
+          "Sign in at audible.ca",
+          "Account Details → Cancel Membership",
+          "Walk through retention offers — keep clicking Continue Cancelling"
+        ],
+        "retentionOffer": "Heavy retention flow — may offer 3 months at half price, free month, or pause.",
+        "estimatedMinutes": 5
+      }
+    },
+    {
+      "id": "paramount_plus",
+      "name": "Paramount+",
+      "aliases": ["Paramount Plus"],
+      "domain": "paramountplus.com",
+      "category": "Entertainment",
+      "tags": ["streaming", "video"],
+      "iconName": "mountain.2",
+      "colorHex": "#0064FF",
+      "tiers": [
+        { "id": "essential_ca", "name": "Essential", "currency": "CAD", "amount": 7.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 7 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.paramountplus.com/account/",
+        "steps": [
+          "Sign in at paramountplus.com",
+          "Account → Cancel Subscription"
+        ],
+        "estimatedMinutes": 3
+      }
+    },
+    {
+      "id": "microsoft_365",
+      "name": "Microsoft 365",
+      "aliases": ["Office 365"],
+      "domain": "microsoft.com",
+      "category": "Productivity",
+      "tags": ["office", "cloud"],
+      "iconName": "doc.text",
+      "colorHex": "#D83B01",
+      "tiers": [
+        { "id": "personal_ca", "name": "Personal", "currency": "CAD", "amount": 9.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 30 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://account.microsoft.com/services/",
+        "steps": [
+          "Sign in at account.microsoft.com",
+          "Services & subscriptions → Manage",
+          "Cancel subscription → choose immediate or end-of-period"
+        ],
+        "retentionOffer": "Limited retention offers.",
+        "estimatedMinutes": 4
+      }
+    },
+    {
+      "id": "google_one",
+      "name": "Google One",
+      "aliases": [],
+      "domain": "one.google.com",
+      "category": "Productivity",
+      "tags": ["cloud", "storage"],
+      "iconName": "cloud",
+      "colorHex": "#4285F4",
+      "tiers": [
+        { "id": "100gb_ca", "name": "100 GB", "currency": "CAD", "amount": 2.79, "region": "CA" },
+        { "id": "200gb_ca", "name": "200 GB", "currency": "CAD", "amount": 3.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 0 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://one.google.com/settings",
+        "steps": [
+          "Open one.google.com/settings",
+          "Cancel membership → confirm"
+        ],
+        "estimatedMinutes": 2
+      }
+    },
+    {
+      "id": "icloud_plus",
+      "name": "iCloud+",
+      "aliases": ["iCloud Plus", "iCloud Storage"],
+      "domain": "apple.com",
+      "category": "Productivity",
+      "tags": ["cloud", "storage"],
+      "iconName": "icloud",
+      "colorHex": "#3693F5",
+      "tiers": [
+        { "id": "50gb_ca", "name": "50 GB", "currency": "CAD", "amount": 1.29, "region": "CA" },
+        { "id": "200gb_ca", "name": "200 GB", "currency": "CAD", "amount": 3.99, "region": "CA" },
+        { "id": "2tb_ca",   "name": "2 TB",   "currency": "CAD", "amount": 12.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 0 },
+      "cancellation": {
+        "method": "app",
+        "url": "https://support.apple.com/en-us/118428",
+        "steps": [
+          "Settings → [your name] → iCloud → Manage Account Storage",
+          "Change Storage Plan → Downgrade Options → choose Free",
+          "Confirm"
+        ],
+        "estimatedMinutes": 2
+      }
+    },
+    {
+      "id": "dropbox",
+      "name": "Dropbox",
+      "aliases": [],
+      "domain": "dropbox.com",
+      "category": "Productivity",
+      "tags": ["cloud", "storage"],
+      "iconName": "archivebox",
+      "colorHex": "#0061FE",
+      "tiers": [
+        { "id": "plus_ca", "name": "Plus (2 TB)", "currency": "CAD", "amount": 14.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 30 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.dropbox.com/account/plan",
+        "steps": [
+          "Sign in at dropbox.com",
+          "Account → Plan → Cancel Plan",
+          "Walk through retention prompts"
+        ],
+        "retentionOffer": "May offer 1 month free or discounted rate.",
+        "estimatedMinutes": 4
+      }
+    },
+    {
+      "id": "adobe_creative_cloud",
+      "name": "Adobe Creative Cloud",
+      "aliases": ["Creative Cloud", "Adobe CC"],
+      "domain": "adobe.com",
+      "category": "Productivity",
+      "tags": ["design", "creative"],
+      "iconName": "paintbrush",
+      "colorHex": "#FF0000",
+      "tiers": [
+        { "id": "all_apps_ca", "name": "All Apps", "currency": "CAD", "amount": 77.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 7 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://account.adobe.com/plans",
+        "steps": [
+          "Sign in at account.adobe.com",
+          "Plans → Manage plan → Cancel plan",
+          "WARNING: cancelling annual plan early incurs 50% early-termination fee on remaining months",
+          "Switch to monthly first if you can to avoid fee"
+        ],
+        "retentionOffer": "Often offers 2 months at 50% off or free month — Adobe is aggressive with retention.",
+        "estimatedMinutes": 8
+      }
+    },
+    {
+      "id": "chatgpt_plus",
+      "name": "ChatGPT Plus",
+      "aliases": ["OpenAI Plus", "ChatGPT"],
+      "domain": "chat.openai.com",
+      "category": "Productivity",
+      "tags": ["ai", "llm"],
+      "iconName": "bubble.left.and.bubble.right",
+      "colorHex": "#10A37F",
+      "tiers": [
+        { "id": "plus_ca", "name": "Plus", "currency": "CAD", "amount": 27.99, "region": "CA" },
+        { "id": "plus_us", "name": "Plus", "currency": "USD", "amount": 20.00, "region": "US" }
+      ],
+      "trial": { "lengthDays": 0 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://chat.openai.com/settings/subscription",
+        "steps": [
+          "Sign in at chat.openai.com",
+          "Settings → Manage subscription",
+          "Cancel plan"
+        ],
+        "estimatedMinutes": 2
+      }
+    },
+    {
+      "id": "claude_pro",
+      "name": "Claude Pro",
+      "aliases": ["Anthropic Claude Pro"],
+      "domain": "claude.ai",
+      "category": "Productivity",
+      "tags": ["ai", "llm"],
+      "iconName": "brain.head.profile",
+      "colorHex": "#D97757",
+      "tiers": [
+        { "id": "pro_ca", "name": "Pro", "currency": "CAD", "amount": 27.99, "region": "CA" },
+        { "id": "pro_us", "name": "Pro", "currency": "USD", "amount": 20.00, "region": "US" }
+      ],
+      "trial": { "lengthDays": 0 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://claude.ai/settings/billing",
+        "steps": [
+          "Sign in at claude.ai",
+          "Settings → Billing → Cancel subscription"
+        ],
+        "estimatedMinutes": 2
+      }
+    },
+    {
+      "id": "github_copilot",
+      "name": "GitHub Copilot",
+      "aliases": ["Copilot"],
+      "domain": "github.com",
+      "category": "Cloud & Dev",
+      "tags": ["ai", "developer"],
+      "iconName": "chevron.left.forwardslash.chevron.right",
+      "colorHex": "#000000",
+      "tiers": [
+        { "id": "individual_ca", "name": "Individual", "currency": "CAD", "amount": 13.00, "region": "CA" },
+        { "id": "individual_us", "name": "Individual", "currency": "USD", "amount": 10.00, "region": "US" }
+      ],
+      "trial": { "lengthDays": 30 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://github.com/settings/billing",
+        "steps": [
+          "Sign in at github.com",
+          "Settings → Billing and plans → Plans and usage",
+          "Cancel Copilot"
+        ],
+        "estimatedMinutes": 2
+      }
+    },
+    {
+      "id": "xbox_game_pass",
+      "name": "Xbox Game Pass",
+      "aliases": ["Game Pass Ultimate", "GPU"],
+      "domain": "xbox.com",
+      "category": "Gaming",
+      "tags": ["gaming"],
+      "iconName": "gamecontroller",
+      "colorHex": "#107C10",
+      "tiers": [
+        { "id": "ultimate_ca", "name": "Ultimate", "currency": "CAD", "amount": 21.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 14 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://account.microsoft.com/services/",
+        "steps": [
+          "Sign in at account.microsoft.com",
+          "Services & subscriptions → Xbox Game Pass → Manage",
+          "Cancel"
+        ],
+        "estimatedMinutes": 3
+      }
+    },
+    {
+      "id": "playstation_plus",
+      "name": "PlayStation Plus",
+      "aliases": ["PS Plus", "PSN Plus"],
+      "domain": "playstation.com",
+      "category": "Gaming",
+      "tags": ["gaming"],
+      "iconName": "gamecontroller.fill",
+      "colorHex": "#003087",
+      "tiers": [
+        { "id": "essential_ca", "name": "Essential", "currency": "CAD", "amount": 11.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 0 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.playstation.com/acct/management",
+        "steps": [
+          "Sign in at playstation.com",
+          "Account Management → Subscriptions → PlayStation Plus → Turn off auto-renew"
+        ],
+        "estimatedMinutes": 3
+      }
+    },
+    {
+      "id": "nintendo_switch_online",
+      "name": "Nintendo Switch Online",
+      "aliases": ["NSO", "Switch Online"],
+      "domain": "nintendo.com",
+      "category": "Gaming",
+      "tags": ["gaming"],
+      "iconName": "gamecontroller",
+      "colorHex": "#E60012",
+      "tiers": [
+        { "id": "individual_ca_yearly", "name": "Individual (yearly)", "currency": "CAD", "amount": 27.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 7 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://accounts.nintendo.com/membership",
+        "steps": [
+          "Sign in at accounts.nintendo.com",
+          "Shop Menu → Nintendo Switch Online → Turn off automatic renewal"
+        ],
+        "estimatedMinutes": 3
+      }
+    },
+    {
+      "id": "apple_arcade",
+      "name": "Apple Arcade",
+      "aliases": [],
+      "domain": "apple.com",
+      "category": "Gaming",
+      "tags": ["gaming"],
+      "iconName": "arcade.stick",
+      "colorHex": "#0070C9",
+      "tiers": [
+        { "id": "standard_ca", "name": "Standard", "currency": "CAD", "amount": 6.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 30 },
+      "cancellation": {
+        "method": "app",
+        "url": "https://support.apple.com/en-us/118428",
+        "steps": [
+          "Settings → [your name] → Subscriptions",
+          "Tap Apple Arcade → Cancel Subscription"
+        ],
+        "estimatedMinutes": 1
+      }
+    },
+    {
+      "id": "headspace",
+      "name": "Headspace",
+      "aliases": [],
+      "domain": "headspace.com",
+      "category": "Health & Fitness",
+      "tags": ["meditation", "wellness"],
+      "iconName": "brain",
+      "colorHex": "#F47D31",
+      "tiers": [
+        { "id": "monthly_ca", "name": "Monthly", "currency": "CAD", "amount": 9.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 14 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://my.headspace.com/subscription",
+        "steps": [
+          "Sign in at my.headspace.com",
+          "Subscription → Cancel"
+        ],
+        "estimatedMinutes": 3
+      }
+    },
+    {
+      "id": "calm",
+      "name": "Calm",
+      "aliases": [],
+      "domain": "calm.com",
+      "category": "Health & Fitness",
+      "tags": ["meditation", "wellness"],
+      "iconName": "leaf",
+      "colorHex": "#4A90D9",
+      "tiers": [
+        { "id": "premium_ca", "name": "Premium", "currency": "CAD", "amount": 9.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 7 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://app.calm.com/account/subscription",
+        "steps": [
+          "Sign in at calm.com",
+          "Profile → Manage Subscription → Cancel"
+        ],
+        "estimatedMinutes": 3
+      }
+    },
+    {
+      "id": "strava",
+      "name": "Strava",
+      "aliases": [],
+      "domain": "strava.com",
+      "category": "Health & Fitness",
+      "tags": ["fitness", "running", "cycling"],
+      "iconName": "figure.hiking",
+      "colorHex": "#FC4C02",
+      "tiers": [
+        { "id": "premium_ca", "name": "Premium", "currency": "CAD", "amount": 11.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 30 },
+      "cancellation": {
+        "method": "unknown",
+        "url": "https://www.strava.com/settings/billing",
+        "estimatedMinutes": 3
+      }
+    },
+    {
+      "id": "apple_news_plus",
+      "name": "Apple News+",
+      "aliases": ["Apple News Plus"],
+      "domain": "apple.com",
+      "category": "News & Reading",
+      "tags": ["news"],
+      "iconName": "newspaper",
+      "colorHex": "#FA2D48",
+      "tiers": [
+        { "id": "standard_ca", "name": "Standard", "currency": "CAD", "amount": 12.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 30 },
+      "cancellation": {
+        "method": "app",
+        "url": "https://support.apple.com/en-us/118428",
+        "steps": [
+          "Settings → [your name] → Subscriptions",
+          "Tap Apple News+ → Cancel Subscription"
+        ],
+        "estimatedMinutes": 1
+      }
+    },
+    {
+      "id": "amazon_prime",
+      "name": "Amazon Prime",
+      "aliases": ["Prime"],
+      "domain": "amazon.ca",
+      "category": "Shopping",
+      "tags": ["shopping", "shipping"],
+      "iconName": "shippingbox",
+      "colorHex": "#00A8E1",
+      "tiers": [
+        { "id": "monthly_ca", "name": "Monthly", "currency": "CAD", "amount": 9.99, "region": "CA" },
+        { "id": "yearly_ca",  "name": "Yearly",  "currency": "CAD", "amount": 99.00, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 30 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.amazon.ca/gp/primecentral",
+        "steps": [
+          "Sign in at amazon.ca",
+          "Manage Prime Membership → End Membership",
+          "Walk through three retention prompts — they'll keep offering reasons to stay"
+        ],
+        "retentionOffer": "Aggressive — multiple screens listing benefits. Just keep clicking End/Continue.",
+        "estimatedMinutes": 5
+      }
+    },
+    {
+      "id": "nordvpn",
+      "name": "NordVPN",
+      "aliases": [],
+      "domain": "nordvpn.com",
+      "category": "Security",
+      "tags": ["vpn", "privacy"],
+      "iconName": "shield.lefthalf.filled",
+      "colorHex": "#4687FF",
+      "tiers": [
+        { "id": "standard_ca", "name": "Standard", "currency": "CAD", "amount": 16.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 0 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://my.nordaccount.com/dashboard/nordvpn/",
+        "steps": [
+          "Sign in at my.nordaccount.com",
+          "NordVPN → Manage subscription → Turn off auto-renew",
+          "Note: refund within 30 days requires contacting support"
+        ],
+        "retentionOffer": "May offer multi-year deal at significant discount.",
+        "estimatedMinutes": 4
+      }
+    },
+    {
+      "id": "1password",
+      "name": "1Password",
+      "aliases": [],
+      "domain": "1password.com",
+      "category": "Security",
+      "tags": ["password", "security"],
+      "iconName": "key",
+      "colorHex": "#0572EC",
+      "tiers": [
+        { "id": "individual_ca", "name": "Individual", "currency": "CAD", "amount": 4.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 14 },
+      "cancellation": {
+        "method": "web",
+        "url": "https://my.1password.com",
+        "steps": [
+          "Sign in at my.1password.com",
+          "Billing → Cancel subscription"
+        ],
+        "estimatedMinutes": 3
+      }
+    },
+    {
+      "id": "discord_nitro",
+      "name": "Discord Nitro",
+      "aliases": ["Nitro"],
+      "domain": "discord.com",
+      "category": "Communication",
+      "tags": ["communication"],
+      "iconName": "message.badge.filled.fill",
+      "colorHex": "#5865F2",
+      "tiers": [
+        { "id": "nitro_ca", "name": "Nitro", "currency": "CAD", "amount": 13.99, "region": "CA" }
+      ],
+      "trial": { "lengthDays": 0 },
+      "cancellation": {
+        "method": "app",
+        "url": "https://discord.com/settings/subscriptions",
+        "steps": [
+          "Discord → User Settings → Subscriptions",
+          "Cancel Nitro"
+        ],
+        "estimatedMinutes": 2
+      }
+    }
+  ],
+  "bundles": [
+    {
+      "id": "apple_one_individual_ca",
+      "name": "Apple One Individual",
+      "vendor": "apple",
+      "currency": "CAD",
+      "amount": 19.95,
+      "region": "CA",
+      "includes": ["apple_music:individual_ca", "apple_tv_plus:standard_ca", "apple_arcade:standard_ca", "icloud_plus:50gb_ca"]
+    },
+    {
+      "id": "apple_one_family_ca",
+      "name": "Apple One Family",
+      "vendor": "apple",
+      "currency": "CAD",
+      "amount": 25.95,
+      "region": "CA",
+      "includes": ["apple_music:individual_ca", "apple_tv_plus:standard_ca", "apple_arcade:standard_ca", "icloud_plus:200gb_ca"]
+    }
+  ]
+}
