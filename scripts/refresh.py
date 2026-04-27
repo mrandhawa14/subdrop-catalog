@@ -149,16 +149,33 @@ def _extract_json(text: str) -> dict | None:
 
 
 def apply_changes(catalog: dict, changes: list[dict]) -> None:
-    """Mutates `catalog` in place — bumps version, stamps updated, applies prices."""
+    """Mutates `catalog` in place — bumps version, stamps updated, applies prices,
+    and appends to each vendor's `priceHistory[]` so the SubDrop client can
+    surface a "this got more expensive" banner the next time it refreshes."""
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     by_vendor: dict[str, dict] = {v["id"]: v for v in catalog["vendors"]}
+
     for change in changes:
         vendor = by_vendor.get(change["vendor_id"])
         if not vendor:
             continue
+
+        # Apply the new tier amount.
         for tier in vendor.get("tiers", []):
             if tier["id"] == change["tier_id"]:
                 tier["amount"] = change["new_amount"]
                 break
+
+        # Append a priceHistory entry. Each entry records "this price became
+        # effective on this date" — the client reads the most recent one to
+        # decide whether to nudge the user about a stale tracked amount.
+        history = vendor.setdefault("priceHistory", [])
+        history.append({
+            "tierId": change["tier_id"],
+            "currency": change["currency"],
+            "amount": change["new_amount"],
+            "effectiveFrom": today,
+        })
 
     catalog["version"] = int(catalog.get("version", 1)) + 1
     catalog["updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
