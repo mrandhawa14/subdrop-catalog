@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "version": 2,
-  "updated": "2026-04-26T03:49:41Z",
+  "version": 3,
+  "updated": "2026-04-29T05:09:09Z",
   "vendors": [
     {
       "id": "netflix",
@@ -20,10 +20,27 @@
       "colorHex": "#E50914",
       "tiers": [
         {
-          "id": "standard_ca",
-          "name": "Standard",
+          "id": "standard_ads_monthly_ca",
+          "name": "Standard with ads",
+          "cycle": "monthly",
           "currency": "CAD",
-          "amount": 16.49,
+          "amount": 5.99,
+          "region": "CA"
+        },
+        {
+          "id": "standard_monthly_ca",
+          "name": "Standard",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 17.99,
+          "region": "CA"
+        },
+        {
+          "id": "premium_monthly_ca",
+          "name": "Premium",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 24.99,
           "region": "CA"
         }
       ],
@@ -59,10 +76,35 @@
       "colorHex": "#1DB954",
       "tiers": [
         {
-          "id": "individual_ca",
+          "id": "individual_monthly_ca",
           "name": "Premium Individual",
+          "cycle": "monthly",
           "currency": "CAD",
           "amount": 11.99,
+          "region": "CA"
+        },
+        {
+          "id": "duo_monthly_ca",
+          "name": "Premium Duo",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 14.99,
+          "region": "CA"
+        },
+        {
+          "id": "family_monthly_ca",
+          "name": "Premium Family",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 16.99,
+          "region": "CA"
+        },
+        {
+          "id": "student_monthly_ca",
+          "name": "Premium Student",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 5.99,
           "region": "CA"
         }
       ],
@@ -98,10 +140,43 @@
       "colorHex": "#113CCF",
       "tiers": [
         {
-          "id": "standard_ca",
+          "id": "standard_ads_monthly_ca",
+          "name": "Standard with Ads",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 7.99,
+          "region": "CA"
+        },
+        {
+          "id": "standard_monthly_ca",
           "name": "Standard",
+          "cycle": "monthly",
           "currency": "CAD",
           "amount": 11.99,
+          "region": "CA"
+        },
+        {
+          "id": "standard_yearly_ca",
+          "name": "Standard",
+          "cycle": "yearly",
+          "currency": "CAD",
+          "amount": 119.99,
+          "region": "CA"
+        },
+        {
+          "id": "premium_monthly_ca",
+          "name": "Premium",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 14.99,
+          "region": "CA"
+        },
+        {
+          "id": "premium_yearly_ca",
+          "name": "Premium",
+          "cycle": "yearly",
+          "currency": "CAD",
+          "amount": 149.99,
           "region": "CA"
         }
       ],
@@ -137,10 +212,27 @@
       "colorHex": "#FF0000",
       "tiers": [
         {
-          "id": "individual_ca",
+          "id": "individual_monthly_ca",
           "name": "Individual",
+          "cycle": "monthly",
           "currency": "CAD",
           "amount": 13.99,
+          "region": "CA"
+        },
+        {
+          "id": "family_monthly_ca",
+          "name": "Family",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 25.99,
+          "region": "CA"
+        },
+        {
+          "id": "student_monthly_ca",
+          "name": "Student",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 7.99,
           "region": "CA"
         }
       ],
@@ -176,10 +268,19 @@
       "colorHex": "#000000",
       "tiers": [
         {
-          "id": "standard_ca",
+          "id": "standard_monthly_ca",
           "name": "Standard",
+          "cycle": "monthly",
           "currency": "CAD",
           "amount": 12.99,
+          "region": "CA"
+        },
+        {
+          "id": "standard_yearly_ca",
+          "name": "Standard",
+          "cycle": "yearly",
+          "currency": "CAD",
+          "amount": 129.0,
           "region": "CA"
         }
       ],
@@ -213,10 +314,35 @@
       "colorHex": "#FA2D48",
       "tiers": [
         {
-          "id": "individual_ca",
+          "id": "student_monthly_ca",
+          "name": "Student",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 5.99,
+          "region": "CA"
+        },
+        {
+          "id": "individual_monthly_ca",
           "name": "Individual",
+          "cycle": "monthly",
           "currency": "CAD",
           "amount": 11.99,
+          "region": "CA"
+        },
+        {
+          "id": "individual_yearly_ca",
+          "name": "Individual",
+          "cycle": "yearly",
+          "currency": "CAD",
+          "amount": 119.0,
+          "region": "CA"
+        },
+        {
+          "id": "family_monthly_ca",
+          "name": "Family",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 17.99,
           "region": "CA"
         }
       ],
@@ -397,10 +523,51 @@
       "colorHex": "#D83B01",
       "tiers": [
         {
-          "id": "personal_ca",
+          "id": "personal_monthly_ca",
           "name": "Personal",
+          "cycle": "monthly",
           "currency": "CAD",
           "amount": 9.99,
+          "region": "CA"
+        },
+        {
+          "id": "personal_yearly_ca",
+          "name": "Personal",
+          "cycle": "yearly",
+          "currency": "CAD",
+          "amount": 99.0,
+          "region": "CA"
+        },
+        {
+          "id": "family_monthly_ca",
+          "name": "Family",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 12.99,
+          "region": "CA"
+        },
+        {
+          "id": "family_yearly_ca",
+          "name": "Family",
+          "cycle": "yearly",
+          "currency": "CAD",
+          "amount": 129.0,
+          "region": "CA"
+        },
+        {
+          "id": "basic_monthly_ca",
+          "name": "Basic",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 2.99,
+          "region": "CA"
+        },
+        {
+          "id": "basic_yearly_ca",
+          "name": "Basic",
+          "cycle": "yearly",
+          "currency": "CAD",
+          "amount": 24.99,
           "region": "CA"
         }
       ],
@@ -569,10 +736,19 @@
       "colorHex": "#FF0000",
       "tiers": [
         {
-          "id": "all_apps_ca",
+          "id": "all_apps_monthly_ca",
           "name": "All Apps",
+          "cycle": "monthly",
           "currency": "CAD",
           "amount": 77.99,
+          "region": "CA"
+        },
+        {
+          "id": "photography_monthly_ca",
+          "name": "Photography Plan",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 14.49,
           "region": "CA"
         }
       ],
@@ -610,17 +786,27 @@
       "colorHex": "#10A37F",
       "tiers": [
         {
-          "id": "plus_ca",
+          "id": "plus_monthly_us",
           "name": "Plus",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 20.0,
+          "region": "US"
+        },
+        {
+          "id": "plus_monthly_ca",
+          "name": "Plus",
+          "cycle": "monthly",
           "currency": "CAD",
           "amount": 27.99,
           "region": "CA"
         },
         {
-          "id": "plus_us",
-          "name": "Plus",
+          "id": "pro_monthly_us",
+          "name": "Pro",
+          "cycle": "monthly",
           "currency": "USD",
-          "amount": 20.0,
+          "amount": 200.0,
           "region": "US"
         }
       ],
@@ -655,18 +841,28 @@
       "colorHex": "#D97757",
       "tiers": [
         {
-          "id": "pro_ca",
+          "id": "pro_monthly_us",
           "name": "Pro",
-          "currency": "CAD",
-          "amount": 27.99,
-          "region": "CA"
-        },
-        {
-          "id": "pro_us",
-          "name": "Pro",
+          "cycle": "monthly",
           "currency": "USD",
           "amount": 20.0,
           "region": "US"
+        },
+        {
+          "id": "pro_yearly_us",
+          "name": "Pro",
+          "cycle": "yearly",
+          "currency": "USD",
+          "amount": 200.0,
+          "region": "US"
+        },
+        {
+          "id": "pro_monthly_ca",
+          "name": "Pro",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 27.99,
+          "region": "CA"
         }
       ],
       "trial": {
@@ -1029,6 +1225,7 @@
         {
           "id": "monthly_ca",
           "name": "Monthly",
+          "cycle": "monthly",
           "currency": "CAD",
           "amount": 9.99,
           "region": "CA"
@@ -1036,8 +1233,25 @@
         {
           "id": "yearly_ca",
           "name": "Yearly",
+          "cycle": "yearly",
           "currency": "CAD",
           "amount": 99.0,
+          "region": "CA"
+        },
+        {
+          "id": "student_monthly_ca",
+          "name": "Student Monthly",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 4.99,
+          "region": "CA"
+        },
+        {
+          "id": "student_yearly_ca",
+          "name": "Student Yearly",
+          "cycle": "yearly",
+          "currency": "CAD",
+          "amount": 49.0,
           "region": "CA"
         }
       ],
@@ -1071,8 +1285,9 @@
       "colorHex": "#4687FF",
       "tiers": [
         {
-          "id": "standard_ca",
-          "name": "Standard",
+          "id": "basic_monthly_ca",
+          "name": "Basic",
+          "cycle": "monthly",
           "currency": "CAD",
           "amount": 16.99,
           "region": "CA"

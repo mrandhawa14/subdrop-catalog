@@ -2,10 +2,11 @@
 """
 SubDrop catalog refresh helper.
 
-Iterates every vendor tier in vendors.json, asks Gemini (with Google
-Search grounding) to verify the current list price, and reports
-proposed changes. Dry-run by default; --apply mutates vendors.json
-in place.
+For every vendor in vendors.json, asks Gemini (with Google Search
+grounding) to enumerate the FULL public plan matrix — every tier
+(by vendor's own name) × every billing cycle the vendor publishes —
+and reconciles the result against the catalog. Dry-run by default;
+--apply mutates vendors.json in place.
 
 Usage:
     export GEMINI_API_KEY=...
@@ -25,6 +26,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -45,37 +47,52 @@ MODEL = "gemini-2.5-flash"
 
 CATALOG_PATH = Path(__file__).resolve().parent.parent / "vendors.json"
 
-# How far new vs. old must differ before we propose a change. 1¢ tolerance
-# absorbs floating-point noise from the model's response.
+# Cents tolerance — absorbs floating-point noise from the model's response.
 CHANGE_THRESHOLD = 0.01
 
+# Cycles we model. Anything else returned by the model is dropped.
+ALLOWED_CYCLES = {"weekly", "monthly", "quarterly", "yearly"}
 
-def verify_tier(client, vendor: dict, tier: dict) -> dict | None:
+
+def discover_plans(client, vendor: dict) -> list[dict] | None:
     """
-    Asks Gemini to look up the current list price for one tier.
-    Returns a change-proposal dict, or None if unchanged or unverified.
+    Asks Gemini to enumerate every public plan offered by `vendor` —
+    each tier × each billing cycle, with current list price.
+    Returns a list of plan dicts, or None on API error / unparseable response.
     """
-    region = tier.get("region", "US")
-    currency = tier.get("currency", "USD")
+    region_hint = _primary_region(vendor)
+    currency_hint = _primary_currency(vendor)
     prompt = (
-        f"You are verifying the current LIST price (excluding tax) for a "
-        f"subscription service.\n\n"
+        f"You are cataloguing the FULL public plan matrix for a subscription service.\n\n"
         f"Service: {vendor['name']}\n"
-        f"Tier: {tier['name']}\n"
-        f"Region: {region}\n"
-        f"Currency: {currency}\n"
-        f"Last known amount: {tier['amount']}\n\n"
-        f"Use Google Search to find the OFFICIAL current list price for "
-        f"this exact tier in this region. Look at the vendor's own pricing "
-        f"page first (their official domain, not third-party comparison "
-        f"sites).\n\n"
-        f"Return ONLY a single JSON object with these fields, nothing else:\n"
-        f"  amount       — number, list price exclusive of tax\n"
-        f"  currency     — must equal \"{currency}\"\n"
-        f"  source_url   — string, page where you confirmed it\n"
-        f"  confidence   — \"high\" | \"medium\" | \"low\"\n\n"
-        f"If you cannot find current pricing with reasonable confidence, "
-        f"return: {{\"unknown\": true, \"reason\": \"...\"}}"
+        f"Domain (authoritative): {vendor.get('domain') or 'unknown'}\n"
+        f"Primary region: {region_hint}\n"
+        f"Primary currency: {currency_hint}\n\n"
+        f"Use Google Search to find this vendor's official pricing page. "
+        f"List EVERY consumer tier they currently publish — using the vendor's "
+        f"own terminology (e.g. \"Premium Individual\", \"Standard with ads\", "
+        f"\"Family\", \"Student\", \"Duo\"). For each tier, include EVERY billing "
+        f"cycle that vendor offers it on (monthly, yearly, weekly, quarterly).\n\n"
+        f"Skip business / enterprise / education-bulk plans. Skip add-ons that "
+        f"only attach to another tier (e.g. \"4K add-on\"). Skip free tiers.\n\n"
+        f"Return ONLY a single JSON object, no Markdown. Shape:\n"
+        f"{{\n"
+        f"  \"plans\": [\n"
+        f"    {{\n"
+        f"      \"name\": string — vendor's own tier name,\n"
+        f"      \"cycle\": \"monthly\" | \"yearly\" | \"weekly\" | \"quarterly\",\n"
+        f"      \"amount\": number — list price excluding tax,\n"
+        f"      \"currency\": ISO 4217 code,\n"
+        f"      \"region\": ISO 3166-1 alpha-2 country code,\n"
+        f"      \"source_url\": string — page where you confirmed it,\n"
+        f"      \"confidence\": \"high\" | \"medium\" | \"low\"\n"
+        f"    }}\n"
+        f"  ]\n"
+        f"}}\n\n"
+        f"Return for the primary region only ({region_hint}, {currency_hint}). "
+        f"If you cannot determine a tier's price for that region, omit it. "
+        f"If the entire vendor is unverifiable, return: "
+        f"{{\"plans\": [], \"unknown\": true, \"reason\": \"...\"}}"
     )
 
     try:
@@ -95,42 +112,128 @@ def verify_tier(client, vendor: dict, tier: dict) -> dict | None:
     parsed = _extract_json(text)
     if not parsed:
         return None
-
     if parsed.get("unknown"):
-        return None
+        return []
 
-    new_amount = parsed.get("amount")
-    returned_currency = parsed.get("currency")
+    plans_raw = parsed.get("plans") or []
+    cleaned: list[dict] = []
+    for p in plans_raw:
+        try:
+            cycle = str(p["cycle"]).lower().strip()
+            if cycle not in ALLOWED_CYCLES:
+                continue
+            amount = float(p["amount"])
+            cleaned.append({
+                "name": str(p["name"]).strip(),
+                "cycle": cycle,
+                "amount": amount,
+                "currency": str(p["currency"]).strip().upper(),
+                "region": str(p["region"]).strip().upper(),
+                "source_url": p.get("source_url"),
+                "confidence": p.get("confidence", "unknown"),
+            })
+        except (KeyError, TypeError, ValueError):
+            continue
+    return cleaned
 
-    # Refuse to propose a change if currency drifted (search may have found
-    # the US price for a CA tier, etc.).
-    if returned_currency != currency:
-        return None
-    if not isinstance(new_amount, (int, float)):
-        return None
-    if abs(float(new_amount) - float(tier["amount"])) < CHANGE_THRESHOLD:
-        return None
 
-    return {
-        "vendor_id": vendor["id"],
-        "vendor_name": vendor["name"],
-        "tier_id": tier["id"],
-        "tier_name": tier["name"],
-        "region": region,
-        "currency": currency,
-        "old_amount": float(tier["amount"]),
-        "new_amount": float(new_amount),
-        "source": parsed.get("source_url"),
-        "confidence": parsed.get("confidence", "unknown"),
-    }
+def _primary_region(vendor: dict) -> str:
+    for tier in vendor.get("tiers", []):
+        if tier.get("region"):
+            return tier["region"]
+    return "US"
+
+
+def _primary_currency(vendor: dict) -> str:
+    for tier in vendor.get("tiers", []):
+        if tier.get("currency"):
+            return tier["currency"]
+    return "USD"
+
+
+def _slug(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "_", value.lower()).strip("_")
+
+
+def reconcile(vendor: dict, discovered: list[dict]) -> list[dict]:
+    """
+    Diffs `discovered` against `vendor['tiers']`. Returns a list of change
+    proposals — additions and amount updates. Existing tiers absent from
+    `discovered` are left alone (additive-only) so we don't drop a tier the
+    search merely missed.
+
+    Match key: (name, cycle, region, currency). All four must equal.
+    """
+    proposals: list[dict] = []
+    existing = vendor.get("tiers", [])
+
+    for plan in discovered:
+        match = next(
+            (t for t in existing
+             if t.get("name") == plan["name"]
+             and (t.get("cycle") or _infer_cycle(t)) == plan["cycle"]
+             and t.get("region") == plan["region"]
+             and t.get("currency") == plan["currency"]),
+            None,
+        )
+        if match is None:
+            proposals.append({
+                "kind": "add",
+                "vendor_id": vendor["id"],
+                "vendor_name": vendor["name"],
+                "tier": {
+                    "id": _synthesize_tier_id(vendor, plan),
+                    "name": plan["name"],
+                    "cycle": plan["cycle"],
+                    "currency": plan["currency"],
+                    "amount": plan["amount"],
+                    "region": plan["region"],
+                },
+                "source": plan.get("source_url"),
+                "confidence": plan.get("confidence", "unknown"),
+            })
+        elif abs(float(match["amount"]) - plan["amount"]) >= CHANGE_THRESHOLD:
+            proposals.append({
+                "kind": "update",
+                "vendor_id": vendor["id"],
+                "vendor_name": vendor["name"],
+                "tier_id": match["id"],
+                "tier_name": match["name"],
+                "cycle": plan["cycle"],
+                "region": plan["region"],
+                "currency": plan["currency"],
+                "old_amount": float(match["amount"]),
+                "new_amount": plan["amount"],
+                "source": plan.get("source_url"),
+                "confidence": plan.get("confidence", "unknown"),
+            })
+
+    return proposals
+
+
+def _infer_cycle(tier: dict) -> str:
+    """Back-compat: tiers without explicit `cycle` infer from id/name."""
+    probe = (str(tier.get("id", "")) + " " + str(tier.get("name", ""))).lower()
+    if "yearly" in probe or "annual" in probe:
+        return "yearly"
+    if "weekly" in probe:
+        return "weekly"
+    if "quarterly" in probe:
+        return "quarterly"
+    return "monthly"
+
+
+def _synthesize_tier_id(vendor: dict, plan: dict) -> str:
+    base = f"{_slug(plan['name'])}_{plan['cycle']}_{plan['region'].lower()}"
+    existing_ids = {t.get("id") for t in vendor.get("tiers", [])}
+    if base not in existing_ids:
+        return base
+    # Disambiguate on the rare collision (e.g. same name+cycle+region across currencies).
+    return f"{base}_{plan['currency'].lower()}"
 
 
 def _extract_json(text: str) -> dict | None:
-    """Pulls the first {...} block out of a model response. Tolerates
-    Markdown fences (```json ... ```) the model sometimes wraps things in."""
-    # Strip a Markdown code fence if present.
     if text.startswith("```"):
-        # remove leading fence line and trailing fence
         lines = text.splitlines()
         if lines and lines[0].startswith("```"):
             lines = lines[1:]
@@ -148,27 +251,31 @@ def _extract_json(text: str) -> dict | None:
         return None
 
 
-def apply_changes(catalog: dict, changes: list[dict]) -> None:
-    """Mutates `catalog` in place — bumps version, stamps updated, applies prices,
-    and appends to each vendor's `priceHistory[]` so the SubDrop client can
-    surface a "this got more expensive" banner the next time it refreshes."""
+def apply_changes(catalog: dict, proposals: list[dict]) -> None:
+    """Mutates `catalog` in place — bumps version, stamps updated, applies tier
+    additions and amount updates, and appends a priceHistory entry for every
+    update so the SubDrop client can surface a 'this got more expensive' banner."""
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     by_vendor: dict[str, dict] = {v["id"]: v for v in catalog["vendors"]}
 
-    for change in changes:
+    for change in proposals:
         vendor = by_vendor.get(change["vendor_id"])
         if not vendor:
             continue
 
-        # Apply the new tier amount.
+        if change["kind"] == "add":
+            vendor.setdefault("tiers", []).append(change["tier"])
+            continue
+
+        # update
         for tier in vendor.get("tiers", []):
             if tier["id"] == change["tier_id"]:
                 tier["amount"] = change["new_amount"]
+                # Backfill cycle on legacy tiers as we touch them.
+                if not tier.get("cycle"):
+                    tier["cycle"] = change["cycle"]
                 break
 
-        # Append a priceHistory entry. Each entry records "this price became
-        # effective on this date" — the client reads the most recent one to
-        # decide whether to nudge the user about a stale tracked amount.
         history = vendor.setdefault("priceHistory", [])
         history.append({
             "tierId": change["tier_id"],
@@ -209,28 +316,47 @@ def main() -> int:
 
     proposals: list[dict] = []
     for vendor in vendors:
-        for tier in vendor.get("tiers", []):
-            label = f"  → {vendor['name']:<28} {tier['name']:<32} ({tier['currency']} {tier['amount']:.2f})"
-            print(label, file=sys.stderr)
-            change = verify_tier(client, vendor, tier)
-            if change:
-                proposals.append(change)
-                print(f"    ↑ {change['old_amount']:.2f} → {change['new_amount']:.2f} [{change['confidence']}]", file=sys.stderr)
-                if change["source"]:
-                    print(f"      {change['source']}", file=sys.stderr)
+        print(f"  → {vendor['name']}", file=sys.stderr)
+        discovered = discover_plans(client, vendor)
+        if discovered is None:
+            print(f"    ! skipped (API error)", file=sys.stderr)
+            continue
+        if not discovered:
+            print(f"    · no plans returned", file=sys.stderr)
+            continue
+        vendor_proposals = reconcile(vendor, discovered)
+        if not vendor_proposals:
+            print(f"    · {len(discovered)} plan(s) verified, no changes", file=sys.stderr)
+            continue
+        for c in vendor_proposals:
+            if c["kind"] == "add":
+                t = c["tier"]
+                print(f"    + add {t['name']} / {t['cycle']} ({t['currency']} {t['amount']:.2f})", file=sys.stderr)
+            else:
+                print(f"    ↑ {c['tier_name']} / {c['cycle']}: {c['old_amount']:.2f} → {c['new_amount']:.2f} [{c['confidence']}]", file=sys.stderr)
+        proposals.extend(vendor_proposals)
 
     print(file=sys.stderr)
     if not proposals:
-        print("✓ No price changes detected.")
+        print("✓ No catalog changes detected.")
         return 0
 
-    print(f"Proposed changes ({len(proposals)}):\n")
-    for c in proposals:
-        print(f"  {c['vendor_name']} / {c['tier_name']} ({c['region']}): "
+    additions = [c for c in proposals if c["kind"] == "add"]
+    updates = [c for c in proposals if c["kind"] == "update"]
+    print(f"Proposed changes: {len(additions)} addition(s), {len(updates)} update(s)\n")
+
+    for c in additions:
+        t = c["tier"]
+        print(f"  + {c['vendor_name']} / {t['name']} ({t['cycle']}, {t['region']}): "
+              f"{t['currency']} {t['amount']:.2f}")
+        if c.get("source"):
+            print(f"      source: {c['source']}")
+    for c in updates:
+        print(f"  ↑ {c['vendor_name']} / {c['tier_name']} ({c['cycle']}, {c['region']}): "
               f"{c['currency']} {c['old_amount']:.2f} → {c['new_amount']:.2f} "
               f"[{c['confidence']}]")
-        if c["source"]:
-            print(f"    source: {c['source']}")
+        if c.get("source"):
+            print(f"      source: {c['source']}")
     print()
 
     if args.apply:
