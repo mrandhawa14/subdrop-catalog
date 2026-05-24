@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "version": 5,
-  "updated": "2026-05-23T00:00:00Z",
+  "version": 6,
+  "updated": "2026-05-23T00:30:00Z",
   "vendors": [
     {
       "id": "netflix",
@@ -32,7 +32,7 @@
           "name": "Standard",
           "cycle": "monthly",
           "currency": "CAD",
-          "amount": 18.99,
+          "amount": 21.99,
           "region": "CA"
         },
         {
