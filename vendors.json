@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": 4,
+  "version": 5,
   "updated": "2026-05-23T00:00:00Z",
   "vendors": [
     {
@@ -144,7 +144,7 @@
           "name": "Standard with Ads",
           "cycle": "monthly",
           "currency": "CAD",
-          "amount": 7.99,
+          "amount": 8.99,
           "region": "CA"
         },
         {
@@ -152,7 +152,7 @@
           "name": "Standard",
           "cycle": "monthly",
           "currency": "CAD",
-          "amount": 11.99,
+          "amount": 15.99,
           "region": "CA"
         },
         {
@@ -160,7 +160,7 @@
           "name": "Standard",
           "cycle": "yearly",
           "currency": "CAD",
-          "amount": 119.99,
+          "amount": 159.99,
           "region": "CA"
         },
         {
@@ -168,7 +168,7 @@
           "name": "Premium",
           "cycle": "monthly",
           "currency": "CAD",
-          "amount": 14.99,
+          "amount": 16.99,
           "region": "CA"
         },
         {
@@ -176,7 +176,7 @@
           "name": "Premium",
           "cycle": "yearly",
           "currency": "CAD",
-          "amount": 149.99,
+          "amount": 169.99,
           "region": "CA"
         }
       ],
@@ -272,7 +272,7 @@
           "name": "Standard",
           "cycle": "monthly",
           "currency": "CAD",
-          "amount": 12.99,
+          "amount": 14.99,
           "region": "CA"
         },
         {
@@ -943,7 +943,7 @@
           "id": "ultimate_ca",
           "name": "Ultimate",
           "currency": "CAD",
-          "amount": 21.99,
+          "amount": 25.99,
           "region": "CA"
         }
       ],
@@ -1018,7 +1018,7 @@
           "id": "individual_ca_yearly",
           "name": "Individual (yearly)",
           "currency": "CAD",
-          "amount": 27.99,
+          "amount": 29.99,
           "region": "CA"
         }
       ],
@@ -1052,7 +1052,7 @@
           "id": "standard_ca",
           "name": "Standard",
           "currency": "CAD",
-          "amount": 6.99,
+          "amount": 8.99,
           "region": "CA"
         }
       ],
@@ -1157,7 +1157,7 @@
           "id": "premium_ca",
           "name": "Premium",
           "currency": "CAD",
-          "amount": 11.99,
+          "amount": 14.99,
           "region": "CA"
         }
       ],
@@ -1189,7 +1189,7 @@
           "id": "standard_ca",
           "name": "Standard",
           "currency": "CAD",
-          "amount": 12.99,
+          "amount": 16.99,
           "region": "CA"
         }
       ],
