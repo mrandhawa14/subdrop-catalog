@@ -1,12 +1,19 @@
 name: Catalog refresh
 
-# By default this workflow runs only on manual trigger so it never moves
-# money or opens PRs without an explicit decision. To enable a weekly
-# automated run, uncomment the `schedule:` block below.
+# Price discovery now happens in an agent (e.g. Claude Code) with web search,
+# which writes a `plans.json` at the repo root. This workflow is the
+# deterministic reconcile half: given that plans file, it diffs against
+# vendors.json and opens a PR with the applied changes. No API key needed.
+#
+# Manual trigger only — commit a `plans.json` (or push one to a branch), then
+# dispatch this workflow.
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: '0 9 * * 1'  # 09:00 UTC every Monday
+    inputs:
+      plans_path:
+        description: "Path to the plans JSON file"
+        required: false
+        default: "plans.json"
 
 permissions:
   contents: write
@@ -24,13 +31,8 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
-        run: pip install -r scripts/requirements.txt
-
-      - name: Run refresh
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python scripts/refresh.py --apply
+      - name: Reconcile plans against catalog
+        run: python scripts/refresh.py --plans "${{ github.event.inputs.plans_path }}" --apply
 
       - name: Open PR if catalog changed
         uses: peter-evans/create-pull-request@v6
@@ -38,12 +40,11 @@ jobs:
           commit-message: "Catalog refresh: proposed price updates"
           title: "Catalog refresh: proposed price updates"
           body: |
-            Automated proposal from `scripts/refresh.py`.
+            Reconciled from a `plans.json` produced by web-search research.
 
-            Each change was suggested by Gemini after a Google Search of the
-            vendor's official pricing page. Review the diff carefully —
-            confidence levels and source URLs are noted in the run log
-            (Actions tab). Reject anything that looks wrong before merging.
+            Review the diff carefully — source URLs and confidence levels are
+            noted in the run log (Actions tab). Reject anything that looks wrong
+            before merging.
           branch: catalog-refresh/${{ github.run_number }}
           delete-branch: true
           add-paths: vendors.json

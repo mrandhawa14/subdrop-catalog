@@ -76,9 +76,9 @@ Anyone is welcome to open a PR adding a vendor or correcting a price — please 
 
 ### Automated price-check helper
 
-`scripts/refresh.py` uses Claude with web search to verify current list prices. Run it locally for a dry-run, or trigger the GitHub Actions workflow (manual by default — uncomment the `schedule:` block in `.github/workflows/refresh.yml` to enable a weekly cron). See [`scripts/README.md`](./scripts/README.md) for usage.
+`scripts/refresh.py` reconciles researched list prices against the catalog — no API key, pure stdlib. Price discovery is done by an agent (e.g. Claude Code) with web search, which writes a `plans.json`; the script diffs it against `vendors.json` and applies the changes. The simplest path: open this repo in Claude Code and ask it to "update the catalog." See [`scripts/README.md`](./scripts/README.md) for the full workflow.
 
-The workflow needs an `ANTHROPIC_API_KEY` repo secret and opens a PR when it finds proposed changes; nothing merges automatically.
+A manual GitHub Actions workflow (`.github/workflows/refresh.yml`) can reconcile a committed `plans.json` and open a PR; nothing merges automatically.
 
 ## Hosting
 

@@ -1,6 +1,6 @@
 # Catalog refresh helper
 
-`refresh.py` asks Claude (with the web_search server tool) to verify the current list price for every vendor tier in `vendors.json`. It prints a human-readable diff of proposed changes; it only writes back to `vendors.json` when you pass `--apply`.
+`refresh.py` reconciles a set of researched list prices against `vendors.json`. Price *discovery* happens outside the script — by a human or by an agent (e.g. Claude Code) using web search — and is handed in as a plans file. The script is the deterministic half: it diffs the plans against the catalog, prints a human-readable diff, and only writes back when you pass `--apply`. No API keys, no network calls — pure stdlib.
 
 ## fetch-app-icons.py — App Store artwork
 
@@ -35,36 +35,60 @@ Vendors without a Simple Icons match are silently skipped.
 
 ---
 
-## refresh.py — price verification
+## refresh.py — price reconciliation
 
-Uses Gemini 2.5 Flash with Google Search grounding to verify the current list price for every vendor tier in `vendors.json`.
+No dependencies, no API key — pure stdlib.
 
 ```bash
 cd /path/to/subdrop-catalog
-python -m venv .venv
-source .venv/bin/activate
-pip install -r scripts/requirements.txt
 
-export GEMINI_API_KEY=...                # or GOOGLE_API_KEY
-python scripts/refresh.py                # dry-run, prints diff
-python scripts/refresh.py --limit 3      # smoke-test 3 vendors
-python scripts/refresh.py --apply        # write changes to vendors.json
+# 1. Emit a research brief: every vendor + the tiers to verify.
+python scripts/refresh.py --emit-brief > brief.json
+
+# 2. Research current list prices (web search) and write a plans file.
+#    Start from a skeleton if you like — it pre-fills the current tiers,
+#    so you only correct the amounts and add a source_url:
+python scripts/refresh.py --emit-template > plans.json
+
+# 3. Dry-run the reconcile to see the proposed diff.
+python scripts/refresh.py --plans plans.json
+
+# 4. Apply once it looks right.
+python scripts/refresh.py --plans plans.json --apply
 ```
 
 After `--apply`, review with `git diff vendors.json` and either commit or `git restore` if anything looks off.
 
-## Cost
+### Doing the research in Claude Code
 
-One Gemini 2.5 Flash call per tier with search grounding. ~30 tiers per full run; expect cents per run on the paid tier, free on the AI Studio free tier (subject to rate limits).
+The intended flow: open this repo in Claude Code and ask it to "update the catalog." Claude reads `vendors.json` (or `--emit-brief`), uses its web-search tool to confirm each vendor's current list price from the official pricing page, writes a `plans.json`, then runs `refresh.py --plans plans.json --apply`. No third-party API key is involved — the search happens through the agent.
+
+### Plans file shape
+
+```jsonc
+{
+  "netflix": [
+    {
+      "name": "Standard",          // vendor's own tier name
+      "cycle": "monthly",          // monthly | yearly | weekly | quarterly
+      "amount": 18.99,             // list price, excluding tax
+      "currency": "CAD",           // ISO 4217
+      "region": "CA",              // ISO 3166-1 alpha-2
+      "source_url": "https://...", // optional, where it was confirmed
+      "confidence": "high"         // optional: high | medium | low
+    }
+  ]
+}
+```
 
 ## What the script will and won't do
 
-- ✅ Verifies *list* prices (the number on the vendor's pricing page, exclusive of tax).
-- ✅ Refuses to propose a change if the model returns a different currency than the tier expects (guards against the model finding the US price for a CA tier).
-- ✅ Bumps `version` and `updated` only when changes are applied.
+- ✅ Reconciles *list* prices (the number on the vendor's pricing page, exclusive of tax).
+- ✅ Additive-only matching on `(name, cycle, region, currency)`: a missed tier in the plans file never deletes the catalog tier — it's simply left untouched.
+- ✅ Bumps `version` and `updated`, and appends a `priceHistory` entry for every amount change, only when changes are applied.
 - ❌ Doesn't touch tax, regional promotions, grandfathered prices, or the user's actual paid amount — those come from on-device sources (statement parsing, etc.) in the SubDrop app.
 - ❌ Doesn't update cancellation steps, retention warnings, or vendor metadata. Those need a human edit.
-- ❌ Doesn't fix entries where the tier `name` or `id` is ambiguous — review those by hand.
+- ❌ Doesn't do any web research itself — that's the agent/human's job (step 2).
 
 ## Exit codes
 
@@ -73,6 +97,6 @@ One Gemini 2.5 Flash call per tier with search grounding. ~30 tiers per full run
 | 0 | No changes detected, or `--apply` succeeded |
 | 1 | `--apply` ran but applied nothing (no diffs found) |
 | 2 | Dry-run found changes (used by CI to gate a PR) |
-| 3 | Configuration error (missing API key, missing file, etc.) |
+| 3 | Configuration error (missing/unparseable plans file, etc.) |
 
 The CI workflow at `.github/workflows/refresh.yml` keys off these codes.
