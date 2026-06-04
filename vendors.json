@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "version": 9,
-  "updated": "2026-05-23T20:00:00Z",
+  "version": 11,
+  "updated": "2026-06-04T00:45:00Z",
   "vendors": [
     {
       "id": "netflix",
@@ -32,7 +32,7 @@
           "name": "Standard",
           "cycle": "monthly",
           "currency": "CAD",
-          "amount": 30.99,
+          "amount": 18.99,
           "region": "CA"
         },
         {
@@ -58,7 +58,15 @@
         "retentionOffer": "May offer a discount or downgrade. Decline if you want to actually cancel.",
         "estimatedMinutes": 3
       },
-      "simpleIconsSlug": "netflix"
+      "simpleIconsSlug": "netflix",
+      "priceHistory": [
+        {
+          "tierId": "standard_monthly_ca",
+          "currency": "CAD",
+          "amount": 18.99,
+          "effectiveFrom": "2026-06-04"
+        }
+      ]
     },
     {
       "id": "spotify",
@@ -326,7 +334,7 @@
           "name": "Individual",
           "cycle": "monthly",
           "currency": "CAD",
-          "amount": 11.99,
+          "amount": 10.99,
           "region": "CA"
         },
         {
@@ -342,7 +350,7 @@
           "name": "Family",
           "cycle": "monthly",
           "currency": "CAD",
-          "amount": 17.99,
+          "amount": 16.99,
           "region": "CA"
         }
       ],
@@ -359,7 +367,21 @@
         "retentionOffer": "Apple typically does not offer retention discounts.",
         "estimatedMinutes": 1
       },
-      "simpleIconsSlug": "applemusic"
+      "simpleIconsSlug": "applemusic",
+      "priceHistory": [
+        {
+          "tierId": "individual_monthly_ca",
+          "currency": "CAD",
+          "amount": 10.99,
+          "effectiveFrom": "2026-06-04"
+        },
+        {
+          "tierId": "family_monthly_ca",
+          "currency": "CAD",
+          "amount": 16.99,
+          "effectiveFrom": "2026-06-04"
+        }
+      ]
     },
     {
       "id": "amazon_prime_video",
@@ -1379,6 +1401,292 @@
         "estimatedMinutes": 2
       },
       "simpleIconsSlug": "discord"
+    },
+    {
+      "id": "perplexity_pro",
+      "name": "Perplexity Pro",
+      "aliases": [
+        "Perplexity AI Pro"
+      ],
+      "domain": "perplexity.ai",
+      "category": "Productivity",
+      "tags": [
+        "ai",
+        "llm",
+        "search"
+      ],
+      "iconName": "magnifyingglass",
+      "colorHex": "#20808D",
+      "tiers": [
+        {
+          "id": "pro_monthly_us",
+          "name": "Pro",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 20.0,
+          "region": "US"
+        },
+        {
+          "id": "pro_yearly_us",
+          "name": "Pro",
+          "cycle": "yearly",
+          "currency": "USD",
+          "amount": 200.0,
+          "region": "US"
+        }
+      ],
+      "trial": {
+        "lengthDays": 0
+      },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.perplexity.ai/settings/account",
+        "steps": [
+          "Sign in at perplexity.ai",
+          "Settings → Account → Manage Subscription",
+          "Cancel subscription"
+        ],
+        "estimatedMinutes": 2
+      },
+      "simpleIconsSlug": "perplexity"
+    },
+    {
+      "id": "google_gemini",
+      "name": "Google Gemini",
+      "aliases": [
+        "Gemini Advanced",
+        "Google AI",
+        "Google One AI Premium"
+      ],
+      "domain": "gemini.google",
+      "category": "Productivity",
+      "tags": [
+        "ai",
+        "llm"
+      ],
+      "iconName": "sparkles",
+      "colorHex": "#4285F4",
+      "tiers": [
+        {
+          "id": "plus_monthly_ca",
+          "name": "Google AI Plus",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 10.99,
+          "region": "CA"
+        },
+        {
+          "id": "pro_monthly_ca",
+          "name": "Google AI Pro",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 26.99,
+          "region": "CA"
+        },
+        {
+          "id": "ultra_monthly_ca",
+          "name": "Google AI Ultra",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 139.99,
+          "region": "CA"
+        }
+      ],
+      "trial": {
+        "lengthDays": 30
+      },
+      "cancellation": {
+        "method": "web",
+        "url": "https://one.google.com/settings",
+        "steps": [
+          "Open one.google.com or the Google One app",
+          "Membership → Cancel membership",
+          "Confirm — access continues until end of billing period"
+        ],
+        "estimatedMinutes": 2
+      },
+      "simpleIconsSlug": "googlegemini"
+    },
+    {
+      "id": "amazon_music",
+      "name": "Amazon Music Unlimited",
+      "aliases": [
+        "Amazon Music"
+      ],
+      "domain": "music.amazon.ca",
+      "category": "Entertainment",
+      "tags": [
+        "streaming",
+        "music"
+      ],
+      "iconName": "music.note",
+      "colorHex": "#25D1DA",
+      "tiers": [
+        {
+          "id": "individual_monthly_ca",
+          "name": "Individual",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 9.99,
+          "region": "CA"
+        }
+      ],
+      "trial": {
+        "lengthDays": 30
+      },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.amazon.ca/music/settings",
+        "steps": [
+          "Sign in at amazon.ca",
+          "Amazon Music Settings → Amazon Music Unlimited",
+          "Cancel subscription"
+        ],
+        "retentionOffer": "May offer a discounted month to stay.",
+        "estimatedMinutes": 3
+      },
+      "simpleIconsSlug": "amazonmusic"
+    },
+    {
+      "id": "canva",
+      "name": "Canva",
+      "aliases": [
+        "Canva Pro"
+      ],
+      "domain": "canva.com",
+      "category": "Productivity",
+      "tags": [
+        "design",
+        "creative"
+      ],
+      "iconName": "paintpalette",
+      "colorHex": "#00C4CC",
+      "tiers": [
+        {
+          "id": "pro_monthly_ca",
+          "name": "Pro",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 12.99,
+          "region": "CA"
+        },
+        {
+          "id": "pro_yearly_ca",
+          "name": "Pro",
+          "cycle": "yearly",
+          "currency": "CAD",
+          "amount": 119.99,
+          "region": "CA"
+        }
+      ],
+      "trial": {
+        "lengthDays": 30
+      },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.canva.com/settings/billing-and-teams",
+        "steps": [
+          "Sign in at canva.com",
+          "Account Settings → Billing & plans",
+          "Cancel subscription"
+        ],
+        "estimatedMinutes": 3
+      },
+      "simpleIconsSlug": "canva"
+    },
+    {
+      "id": "duolingo",
+      "name": "Duolingo",
+      "aliases": [
+        "Super Duolingo"
+      ],
+      "domain": "duolingo.com",
+      "category": "Education",
+      "tags": [
+        "education",
+        "language"
+      ],
+      "iconName": "character.bubble",
+      "colorHex": "#58CC02",
+      "tiers": [
+        {
+          "id": "super_monthly_ca",
+          "name": "Super",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 17.49,
+          "region": "CA"
+        },
+        {
+          "id": "super_yearly_ca",
+          "name": "Super",
+          "cycle": "yearly",
+          "currency": "CAD",
+          "amount": 119.99,
+          "region": "CA"
+        },
+        {
+          "id": "super_family_yearly_ca",
+          "name": "Super Family",
+          "cycle": "yearly",
+          "currency": "CAD",
+          "amount": 149.99,
+          "region": "CA"
+        }
+      ],
+      "trial": {
+        "lengthDays": 14
+      },
+      "cancellation": {
+        "method": "app",
+        "url": "https://support.duolingo.com/hc/en-us/articles/4404266956685",
+        "steps": [
+          "If subscribed via iOS: Settings → [your name] → Subscriptions → Duolingo → Cancel",
+          "If subscribed via Android: Play Store → Subscriptions → Duolingo → Cancel",
+          "If subscribed on the web: duolingo.com → Settings → manage subscription"
+        ],
+        "estimatedMinutes": 2
+      },
+      "simpleIconsSlug": "duolingo"
+    },
+    {
+      "id": "kindle_unlimited",
+      "name": "Kindle Unlimited",
+      "aliases": [
+        "KU"
+      ],
+      "domain": "amazon.ca",
+      "category": "News & Reading",
+      "tags": [
+        "books",
+        "reading"
+      ],
+      "iconName": "book",
+      "colorHex": "#FF9900",
+      "tiers": [
+        {
+          "id": "standard_monthly_ca",
+          "name": "Standard",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 11.99,
+          "region": "CA"
+        }
+      ],
+      "trial": {
+        "lengthDays": 30
+      },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.amazon.ca/kindleunlimited",
+        "steps": [
+          "Sign in at amazon.ca",
+          "Account → Memberships & Subscriptions → Kindle Unlimited",
+          "Cancel Kindle Unlimited Membership"
+        ],
+        "estimatedMinutes": 3
+      },
+      "simpleIconsSlug": "amazon"
     }
   ],
   "bundles": [
