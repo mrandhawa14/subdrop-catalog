@@ -1,5 +1,9 @@
 # Changelog
 
+## v12 — 2026-08-30
+
+Refined cancellation guidance to remove em dashes from all catalog copy, keeping the hosted catalog aligned with DueLume's launch UI style. Refreshed the 30-currency exchange-rate snapshot and published the 15-country tax manifest used by the app. No vendor prices, tiers, or cancellation behavior changed.
+
 ## v11 — 2026-06-04
 
 Added 6 services (web-search verified prices), and a new **Education** category.

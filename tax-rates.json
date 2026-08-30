@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "version": 1,
-  "updated": "2026-05-23T19:00:00Z",
+  "version": 3,
+  "updated": "2026-08-30T10:38:16Z",
   "regions": [
     {
       "country": "CA",
@@ -139,6 +139,230 @@
           "digitalServices": true,
           "components": [
             { "name": "GST", "rate": 0.05 }
+          ]
+        }
+      ]
+    },
+    {
+      "country": "GB",
+      "name": "United Kingdom",
+      "subregions": [
+        {
+          "code": "GB",
+          "name": "United Kingdom",
+          "rate": 0.20,
+          "type": "VAT",
+          "digitalServices": true,
+          "components": [
+            { "name": "VAT", "rate": 0.20 }
+          ]
+        }
+      ]
+    },
+    {
+      "country": "IE",
+      "name": "Ireland",
+      "subregions": [
+        {
+          "code": "IE",
+          "name": "Ireland",
+          "rate": 0.23,
+          "type": "VAT",
+          "digitalServices": true,
+          "components": [
+            { "name": "VAT", "rate": 0.23 }
+          ]
+        }
+      ]
+    },
+    {
+      "country": "DE",
+      "name": "Germany",
+      "subregions": [
+        {
+          "code": "DE",
+          "name": "Germany",
+          "rate": 0.19,
+          "type": "VAT",
+          "digitalServices": true,
+          "components": [
+            { "name": "VAT", "rate": 0.19 }
+          ]
+        }
+      ]
+    },
+    {
+      "country": "FR",
+      "name": "France",
+      "subregions": [
+        {
+          "code": "FR",
+          "name": "France",
+          "rate": 0.20,
+          "type": "TVA",
+          "digitalServices": true,
+          "components": [
+            { "name": "TVA", "rate": 0.20 }
+          ]
+        }
+      ]
+    },
+    {
+      "country": "IT",
+      "name": "Italy",
+      "subregions": [
+        {
+          "code": "IT",
+          "name": "Italy",
+          "rate": 0.22,
+          "type": "IVA",
+          "digitalServices": true,
+          "components": [
+            { "name": "IVA", "rate": 0.22 }
+          ]
+        }
+      ]
+    },
+    {
+      "country": "ES",
+      "name": "Spain",
+      "subregions": [
+        {
+          "code": "ES",
+          "name": "Spain",
+          "rate": 0.21,
+          "type": "IVA",
+          "digitalServices": true,
+          "components": [
+            { "name": "IVA", "rate": 0.21 }
+          ]
+        }
+      ]
+    },
+    {
+      "country": "NL",
+      "name": "Netherlands",
+      "subregions": [
+        {
+          "code": "NL",
+          "name": "Netherlands",
+          "rate": 0.21,
+          "type": "BTW",
+          "digitalServices": true,
+          "components": [
+            { "name": "BTW", "rate": 0.21 }
+          ]
+        }
+      ]
+    },
+    {
+      "country": "AU",
+      "name": "Australia",
+      "subregions": [
+        {
+          "code": "AU",
+          "name": "Australia",
+          "rate": 0.10,
+          "type": "GST",
+          "digitalServices": true,
+          "components": [
+            { "name": "GST", "rate": 0.10 }
+          ]
+        }
+      ]
+    },
+    {
+      "country": "NZ",
+      "name": "New Zealand",
+      "subregions": [
+        {
+          "code": "NZ",
+          "name": "New Zealand",
+          "rate": 0.15,
+          "type": "GST",
+          "digitalServices": true,
+          "components": [
+            { "name": "GST", "rate": 0.15 }
+          ]
+        }
+      ]
+    },
+    {
+      "country": "IN",
+      "name": "India",
+      "subregions": [
+        {
+          "code": "IN",
+          "name": "India",
+          "rate": 0.18,
+          "type": "GST",
+          "digitalServices": true,
+          "components": [
+            { "name": "GST", "rate": 0.18 }
+          ]
+        }
+      ]
+    },
+    {
+      "country": "SG",
+      "name": "Singapore",
+      "subregions": [
+        {
+          "code": "SG",
+          "name": "Singapore",
+          "rate": 0.09,
+          "type": "GST",
+          "digitalServices": true,
+          "components": [
+            { "name": "GST", "rate": 0.09 }
+          ]
+        }
+      ]
+    },
+    {
+      "country": "JP",
+      "name": "Japan",
+      "subregions": [
+        {
+          "code": "JP",
+          "name": "Japan",
+          "rate": 0.10,
+          "type": "Consumption Tax",
+          "digitalServices": true,
+          "components": [
+            { "name": "Consumption Tax", "rate": 0.10 }
+          ]
+        }
+      ]
+    },
+    {
+      "country": "MX",
+      "name": "Mexico",
+      "subregions": [
+        {
+          "code": "MX",
+          "name": "Mexico",
+          "rate": 0.16,
+          "type": "IVA",
+          "digitalServices": true,
+          "components": [
+            { "name": "IVA", "rate": 0.16 }
+          ]
+        }
+      ]
+    },
+    {
+      "country": "US",
+      "name": "United States",
+      "subregions": [
+        {
+          "code": "US",
+          "name": "United States (varies by state)",
+          "rate": 0.0,
+          "type": "Varies",
+          "digitalServices": true,
+          "components": [
+            { "name": "Sales tax", "rate": 0.0 }
           ]
         }
       ]

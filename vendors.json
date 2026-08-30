@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "version": 11,
-  "updated": "2026-06-04T00:45:00Z",
+  "version": 12,
+  "updated": "2026-08-30T10:38:16Z",
   "vendors": [
     {
       "id": "netflix",
@@ -125,7 +125,7 @@
         "steps": [
           "Sign in at spotify.com",
           "Account \u2192 Available plans \u2192 Cancel Premium",
-          "Confirm \u2014 access continues until end of billing period"
+          "Confirm; access continues until end of billing period"
         ],
         "retentionOffer": "May offer 3 months at a reduced rate.",
         "estimatedMinutes": 2
@@ -485,9 +485,9 @@
         "steps": [
           "Sign in at audible.ca",
           "Account Details \u2192 Cancel Membership",
-          "Walk through retention offers \u2014 keep clicking Continue Cancelling"
+          "Walk through retention offers; keep clicking Continue Cancelling"
         ],
-        "retentionOffer": "Heavy retention flow \u2014 may offer 3 months at half price, free month, or pause.",
+        "retentionOffer": "Heavy retention flow; may offer 3 months at half price, free month, or pause.",
         "estimatedMinutes": 5
       },
       "simpleIconsSlug": "audible"
@@ -786,7 +786,7 @@
           "WARNING: cancelling annual plan early incurs 50% early-termination fee on remaining months",
           "Switch to monthly first if you can to avoid fee"
         ],
-        "retentionOffer": "Often offers 2 months at 50% off or free month \u2014 Adobe is aggressive with retention.",
+        "retentionOffer": "Often offers 2 months at 50% off or a free month. Adobe is aggressive with retention.",
         "estimatedMinutes": 8
       },
       "simpleIconsSlug": "adobecreativecloud"
@@ -1286,9 +1286,9 @@
         "steps": [
           "Sign in at amazon.ca",
           "Manage Prime Membership \u2192 End Membership",
-          "Walk through three retention prompts \u2014 they'll keep offering reasons to stay"
+          "Walk through three retention prompts; they'll keep offering reasons to stay"
         ],
-        "retentionOffer": "Aggressive \u2014 multiple screens listing benefits. Just keep clicking End/Continue.",
+        "retentionOffer": "Aggressive: multiple screens list benefits. Just keep clicking End/Continue.",
         "estimatedMinutes": 5
       },
       "simpleIconsSlug": "amazon"
@@ -1501,7 +1501,7 @@
         "steps": [
           "Open one.google.com or the Google One app",
           "Membership → Cancel membership",
-          "Confirm — access continues until end of billing period"
+          "Confirm; access continues until end of billing period"
         ],
         "estimatedMinutes": 2
       },
@@ -1698,8 +1698,8 @@
       "amount": 19.95,
       "region": "CA",
       "includes": [
-        "apple_music:individual_ca",
-        "apple_tv_plus:standard_ca",
+        "apple_music:individual_monthly_ca",
+        "apple_tv_plus:standard_monthly_ca",
         "apple_arcade:standard_ca",
         "icloud_plus:50gb_ca"
       ]
@@ -1712,8 +1712,8 @@
       "amount": 25.95,
       "region": "CA",
       "includes": [
-        "apple_music:individual_ca",
-        "apple_tv_plus:standard_ca",
+        "apple_music:individual_monthly_ca",
+        "apple_tv_plus:standard_monthly_ca",
         "apple_arcade:standard_ca",
         "icloud_plus:200gb_ca"
       ]
