@@ -1,5 +1,18 @@
 # Changelog
 
+## v13 — 2026-08-30
+
+Added a six-service professional and creator expansion, bringing the catalog to 42 vendors.
+
+- **Notion**: Plus and Business plans.
+- **Cursor**: Pro, Pro+, and Ultra plans.
+- **Figma**: Professional Full, Dev, and Collab seats.
+- **Midjourney**: Basic, Standard, Pro, and Mega plans.
+- **LinkedIn Premium**: Premium Career monthly and yearly plans in Canada and the US.
+- **Linear**: Basic and Business annual plans.
+
+Prices were checked against each vendor's official pricing pages on 2026-08-30. Each service includes aliases, category metadata, and a cancellation playbook.
+
 ## v12 — 2026-08-30
 
 Refined cancellation guidance to remove em dashes from all catalog copy, keeping the hosted catalog aligned with DueLume's launch UI style. Refreshed the 30-currency exchange-rate snapshot and published the 15-country tax manifest used by the app. No vendor prices, tiers, or cancellation behavior changed.

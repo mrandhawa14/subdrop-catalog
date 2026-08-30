@@ -56,6 +56,7 @@ SEARCH_OVERRIDES: dict[str, str] = {
     "microsoft_365": "Microsoft 365",
     "amazon_prime": "Amazon Shopping",  # the actual Prime-branded shopping app
     "discord_nitro": "Discord",
+    "linkedin_premium": "LinkedIn",
     "adobe_creative_cloud": "Adobe Creative Cloud",
     "1password": "1Password",
     "crave": "Crave",  # paired with COUNTRY_OVERRIDE 'ca'
@@ -70,6 +71,8 @@ SEARCH_OVERRIDES: dict[str, str] = {
 SKIP: set[str] = {
     "icloud_plus",       # bundled in Settings
     "apple_arcade",      # bundled in App Store
+    "cursor",            # no official iOS app
+    "midjourney",        # no official iOS app
 }
 
 

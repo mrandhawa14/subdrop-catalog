@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "version": 12,
-  "updated": "2026-08-30T10:38:16Z",
+  "version": 13,
+  "updated": "2026-08-30T19:21:42Z",
   "vendors": [
     {
       "id": "netflix",
@@ -1687,6 +1687,348 @@
         "estimatedMinutes": 3
       },
       "simpleIconsSlug": "amazon"
+    },
+    {
+      "id": "notion",
+      "name": "Notion",
+      "aliases": [
+        "Notion Plus",
+        "Notion Business"
+      ],
+      "domain": "notion.com",
+      "category": "Productivity",
+      "tags": [
+        "notes",
+        "workspace",
+        "ai"
+      ],
+      "iconName": "square.grid.2x2",
+      "colorHex": "#111111",
+      "tiers": [
+        {
+          "id": "plus_monthly_us",
+          "name": "Plus",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 10.0,
+          "region": "US"
+        },
+        {
+          "id": "business_monthly_us",
+          "name": "Business",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 20.0,
+          "region": "US"
+        }
+      ],
+      "trial": {
+        "lengthDays": 0
+      },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.notion.so/profile/plan",
+        "steps": [
+          "Open Notion settings",
+          "People or Plans → Change plan",
+          "Choose the Free plan and confirm"
+        ],
+        "estimatedMinutes": 3
+      },
+      "simpleIconsSlug": "notion"
+    },
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "aliases": [
+        "Cursor Pro",
+        "Cursor Pro+",
+        "Cursor Ultra"
+      ],
+      "domain": "cursor.com",
+      "category": "Cloud & Dev",
+      "tags": [
+        "ai",
+        "developer",
+        "coding"
+      ],
+      "iconName": "cursorarrow.rays",
+      "colorHex": "#111111",
+      "tiers": [
+        {
+          "id": "pro_monthly_us",
+          "name": "Pro",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 20.0,
+          "region": "US"
+        },
+        {
+          "id": "pro_plus_monthly_us",
+          "name": "Pro+",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 60.0,
+          "region": "US"
+        },
+        {
+          "id": "ultra_monthly_us",
+          "name": "Ultra",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 200.0,
+          "region": "US"
+        }
+      ],
+      "trial": {
+        "lengthDays": 0
+      },
+      "cancellation": {
+        "method": "web",
+        "url": "https://cursor.com/dashboard",
+        "steps": [
+          "Sign in at cursor.com",
+          "Dashboard → Billing",
+          "Manage subscription → Cancel"
+        ],
+        "estimatedMinutes": 2
+      },
+      "simpleIconsSlug": "cursor"
+    },
+    {
+      "id": "figma",
+      "name": "Figma",
+      "aliases": [
+        "Figma Professional",
+        "FigJam"
+      ],
+      "domain": "figma.com",
+      "category": "Productivity",
+      "tags": [
+        "design",
+        "creative",
+        "collaboration"
+      ],
+      "iconName": "pencil.and.outline",
+      "colorHex": "#A259FF",
+      "tiers": [
+        {
+          "id": "professional_full_monthly_us",
+          "name": "Professional Full seat",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 16.0,
+          "region": "US"
+        },
+        {
+          "id": "professional_dev_monthly_us",
+          "name": "Professional Dev seat",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 12.0,
+          "region": "US"
+        },
+        {
+          "id": "professional_collab_monthly_us",
+          "name": "Professional Collab seat",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 3.0,
+          "region": "US"
+        }
+      ],
+      "trial": {
+        "lengthDays": 0
+      },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.figma.com/settings",
+        "steps": [
+          "Open the Figma Admin settings",
+          "Plan → Billing",
+          "Downgrade the team or remove paid seats"
+        ],
+        "estimatedMinutes": 4
+      },
+      "simpleIconsSlug": "figma"
+    },
+    {
+      "id": "midjourney",
+      "name": "Midjourney",
+      "aliases": [
+        "Midjourney AI"
+      ],
+      "domain": "midjourney.com",
+      "category": "Productivity",
+      "tags": [
+        "ai",
+        "images",
+        "creative"
+      ],
+      "iconName": "wand.and.sparkles",
+      "colorHex": "#1B1B1B",
+      "tiers": [
+        {
+          "id": "basic_monthly_us",
+          "name": "Basic",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 10.0,
+          "region": "US"
+        },
+        {
+          "id": "standard_monthly_us",
+          "name": "Standard",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 30.0,
+          "region": "US"
+        },
+        {
+          "id": "pro_monthly_us",
+          "name": "Pro",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 60.0,
+          "region": "US"
+        },
+        {
+          "id": "mega_monthly_us",
+          "name": "Mega",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 120.0,
+          "region": "US"
+        }
+      ],
+      "trial": {
+        "lengthDays": 0
+      },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.midjourney.com/account",
+        "steps": [
+          "Sign in at midjourney.com",
+          "Open Manage Subscription",
+          "Cancel plan and confirm"
+        ],
+        "estimatedMinutes": 2
+      },
+      "simpleIconsSlug": "midjourney"
+    },
+    {
+      "id": "linkedin_premium",
+      "name": "LinkedIn Premium",
+      "aliases": [
+        "LinkedIn Premium Career",
+        "Premium Career"
+      ],
+      "domain": "linkedin.com",
+      "category": "Productivity",
+      "tags": [
+        "career",
+        "jobs",
+        "learning"
+      ],
+      "iconName": "briefcase.fill",
+      "colorHex": "#0A66C2",
+      "tiers": [
+        {
+          "id": "career_monthly_ca",
+          "name": "Premium Career",
+          "cycle": "monthly",
+          "currency": "CAD",
+          "amount": 49.99,
+          "region": "CA"
+        },
+        {
+          "id": "career_yearly_ca",
+          "name": "Premium Career",
+          "cycle": "yearly",
+          "currency": "CAD",
+          "amount": 299.88,
+          "region": "CA"
+        },
+        {
+          "id": "career_monthly_us",
+          "name": "Premium Career",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 39.99,
+          "region": "US"
+        },
+        {
+          "id": "career_yearly_us",
+          "name": "Premium Career",
+          "cycle": "yearly",
+          "currency": "USD",
+          "amount": 239.88,
+          "region": "US"
+        }
+      ],
+      "trial": {
+        "lengthDays": 30
+      },
+      "cancellation": {
+        "method": "web",
+        "url": "https://www.linkedin.com/premium/manage",
+        "steps": [
+          "Open LinkedIn Premium settings",
+          "Manage subscription → Cancel subscription",
+          "Confirm the cancellation"
+        ],
+        "estimatedMinutes": 3
+      },
+      "simpleIconsSlug": "linkedin"
+    },
+    {
+      "id": "linear",
+      "name": "Linear",
+      "aliases": [
+        "Linear Basic",
+        "Linear Business"
+      ],
+      "domain": "linear.app",
+      "category": "Cloud & Dev",
+      "tags": [
+        "developer",
+        "projects",
+        "collaboration"
+      ],
+      "iconName": "line.3.horizontal.decrease.circle",
+      "colorHex": "#5E6AD2",
+      "tiers": [
+        {
+          "id": "basic_yearly_us",
+          "name": "Basic",
+          "cycle": "yearly",
+          "currency": "USD",
+          "amount": 120.0,
+          "region": "US"
+        },
+        {
+          "id": "business_yearly_us",
+          "name": "Business",
+          "cycle": "yearly",
+          "currency": "USD",
+          "amount": 192.0,
+          "region": "US"
+        }
+      ],
+      "trial": {
+        "lengthDays": 0
+      },
+      "cancellation": {
+        "method": "web",
+        "url": "https://linear.app/settings",
+        "steps": [
+          "Open Linear workspace settings",
+          "Plans and billing → Manage plan",
+          "Downgrade to Free and confirm"
+        ],
+        "estimatedMinutes": 3
+      },
+      "simpleIconsSlug": "linear"
     }
   ],
   "bundles": [
