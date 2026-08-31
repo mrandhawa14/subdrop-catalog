@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mrandhawa14.github.io/subdrop-catalog/schema.json",
+  "title": "DueLume App Catalog Feed",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "version", "updated", "vendors", "bundles"],
+  "properties": {
+    "schema": { "type": "integer", "minimum": 1 },
+    "version": { "type": "integer", "minimum": 1 },
+    "updated": { "type": "string", "format": "date-time" },
+    "vendors": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/vendor" }
+    },
+    "bundles": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/bundle" }
+    }
+  },
+  "$defs": {
+    "date": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "dateOrNull": {
+      "oneOf": [
+        { "$ref": "#/$defs/date" },
+        { "type": "null" }
+      ]
+    },
+    "vendor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "name", "aliases", "category", "tags", "iconName",
+        "colorHex", "tiers"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+        "name": { "type": "string", "minLength": 1 },
+        "aliases": { "type": "array", "items": { "type": "string" } },
+        "domain": { "type": ["string", "null"] },
+        "launchedAt": { "$ref": "#/$defs/dateOrNull" },
+        "retiredAt": { "$ref": "#/$defs/dateOrNull" },
+        "category": { "type": "string", "minLength": 1 },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "iconName": { "type": "string", "minLength": 1 },
+        "colorHex": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "simpleIconsSlug": { "type": ["string", "null"] },
+        "tiers": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/tier" }
+        },
+        "trial": { "$ref": "#/$defs/trial" },
+        "cancellation": { "$ref": "#/$defs/cancellation" },
+        "priceHistory": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/priceHistory" }
+        }
+      }
+    },
+    "tier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "currency", "amount", "region"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "amount": { "type": "number", "minimum": 0 },
+        "region": { "type": "string", "pattern": "^[A-Z]{2}$" },
+        "cycle": {
+          "type": "string",
+          "enum": ["weekly", "monthly", "quarterly", "yearly", "custom"]
+        },
+        "taxIncluded": { "type": "boolean" },
+        "availableFrom": { "$ref": "#/$defs/dateOrNull" },
+        "retiredAt": { "$ref": "#/$defs/dateOrNull" }
+      }
+    },
+    "trial": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lengthDays"],
+      "properties": {
+        "lengthDays": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "cancellation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method"],
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["web", "app", "phone", "email", "unknown"]
+        },
+        "url": { "type": ["string", "null"] },
+        "steps": { "type": "array", "items": { "type": "string" } },
+        "retentionOffer": { "type": ["string", "null"] },
+        "estimatedMinutes": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "priceHistory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tierId", "currency", "amount", "effectiveFrom"],
+      "properties": {
+        "tierId": { "type": "string", "minLength": 1 },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "amount": { "type": "number", "minimum": 0 },
+        "effectiveFrom": { "$ref": "#/$defs/date" },
+        "effectiveTo": { "$ref": "#/$defs/dateOrNull" },
+        "region": { "type": "string", "pattern": "^[A-Z]{2}$" }
+      }
+    },
+    "bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "vendor", "currency", "amount", "region", "includes"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "vendor": { "type": "string", "minLength": 1 },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "amount": { "type": "number", "minimum": 0 },
+        "region": { "type": "string", "pattern": "^[A-Z]{2}$" },
+        "includes": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

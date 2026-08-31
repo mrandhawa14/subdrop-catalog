@@ -29,12 +29,13 @@ The catalog supplies *reference* prices and metadata. The user's *actual* paid a
       "name": "Netflix",
       "aliases": ["NFLX"],
       "domain": "netflix.com",
+      "launchedAt": "YYYY-MM-DD", // only when backed by a source
       "category": "Entertainment",
       "tags": ["streaming", "video"],
       "iconName": "play.rectangle.fill",  // SF Symbol fallback
       "colorHex": "#E50914",
       "tiers": [
-        { "id": "standard_ads_us", "name": "Standard with ads", "currency": "USD", "amount": 7.99, "region": "US" },
+        { "id": "standard_ads_us", "name": "Standard with ads", "currency": "USD", "amount": 7.99, "region": "US", "availableFrom": "YYYY-MM-DD" },
         { "id": "standard_ca",     "name": "Standard",          "currency": "CAD", "amount": 16.49, "region": "CA" }
       ],
       "trial": { "lengthDays": 0 },
@@ -50,7 +51,7 @@ The catalog supplies *reference* prices and metadata. The user's *actual* paid a
         "estimatedMinutes": 3
       },
       "priceHistory": [
-        { "tierId": "standard_ca", "currency": "CAD", "amount": 14.99, "effectiveFrom": "2023-10-18" },
+        { "tierId": "standard_ca", "currency": "CAD", "amount": 14.99, "effectiveFrom": "2023-10-18", "effectiveTo": "2024-10-14", "region": "CA" },
         { "tierId": "standard_ca", "currency": "CAD", "amount": 16.49, "effectiveFrom": "2024-10-15" }
       ]
     }
@@ -64,15 +65,27 @@ The catalog supplies *reference* prices and metadata. The user's *actual* paid a
 - **`region`**: ISO 3166-1 alpha-2. v1 ships `US` and `CA` only.
 - **`currency`**: ISO 4217. Always matches what the vendor charges in that region.
 - **`tiers[].amount`**: vendor's *list* price, exclusive of tax. The user's app derives tax = actual − list.
+- **`launchedAt` / `retiredAt`**: optional sourced availability window for the service itself. Never infer these from a company founding date.
+- **`tiers[].availableFrom` / `tiers[].retiredAt`**: optional availability window for that exact named plan. Renames and predecessor plans need separate evidence rather than a guessed backdate.
 - **`cancellation.method`**: `web` | `app` | `phone` | `email` | `unknown`.
-- **`priceHistory`**: optional. When present, lets the app show "↑ went up $X since `effectiveFrom`" badges.
+- **`priceHistory`**: optional effective-dated list-price observations. `effectiveTo` and `region` make a complete historical window explicit; missing history means unknown, not “same as today.”
 - **`iconName`**: SF Symbol name used until proper logo PNGs ship in v1.1.
+
+Timeline fields are warning inputs, not hard truth about a person's account. The app may allow an earlier date for migrated or predecessor services, but it must ask the user to confirm it. Historical catalog prices are reference prices and must never silently overwrite a user-entered or receipt-observed amount.
 
 ## Maintenance
 
 This catalog is solo-maintained today. Updates aim for ~weekly cadence on top vendors.
 
 Anyone is welcome to open a PR adding a vendor or correcting a price — please cite a public source (the vendor's own pricing page is best). Changes ship on merge to `main`.
+
+Before publishing timeline or history changes, run:
+
+```bash
+python scripts/validate_catalog.py
+```
+
+The validator rejects impossible availability windows, unknown history tier IDs, currency mismatches, and malformed ISO dates. A valid shape does not replace source review.
 
 ### Automated price-check helper
 

@@ -59,6 +59,34 @@ python scripts/refresh.py --plans plans.json --apply
 
 After `--apply`, review with `git diff vendors.json` and either commit or `git restore` if anything looks off.
 
+### Timeline and historical-price fields
+
+`refresh.py` remains intentionally focused on current-price reconciliation. Service launch dates, tier availability windows, retirements, and historical price windows require source review because a brand launch, company founding, plan rename, and regional rollout are not interchangeable.
+
+When adding those fields manually, use the optional contract fields below and run the invariant validator before committing:
+
+```jsonc
+{
+  "launchedAt": "2019-11-01",
+  "retiredAt": null,
+  "tiers": [{
+    "availableFrom": "2022-03-08",
+    "retiredAt": null
+  }],
+  "priceHistory": [{
+    "effectiveFrom": "2023-10-18",
+    "effectiveTo": "2024-10-14",
+    "region": "CA"
+  }]
+}
+```
+
+```bash
+python scripts/validate_catalog.py
+```
+
+Never backfill an unknown date or historical amount from today's plan. Omission is the correct representation of missing evidence.
+
 ### Doing the research in Claude Code
 
 The intended flow: open this repo in Claude Code and ask it to "update the catalog." Claude reads `vendors.json` (or `--emit-brief`), uses its web-search tool to confirm each vendor's current list price from the official pricing page, writes a `plans.json`, then runs `refresh.py --plans plans.json --apply`. No third-party API key is involved — the search happens through the agent.
