@@ -1,5 +1,17 @@
 # Changelog
 
+## v14 - 2026-08-31
+
+Expanded verified country pricing for Canada and the United States.
+
+- Added current US plans for Netflix, Spotify, Disney+, Apple TV+, Apple Music, iCloud+, and Apple Arcade.
+- Updated current Canadian Apple Music Individual and Family pricing.
+- Added current 6 TB and 12 TB iCloud+ plans for Canada and the US.
+- Preserved Apple Music's previous Canadian prices as closed historical windows.
+- Added a dated source register so each edited price can be rechecked against the vendor's own page.
+
+No price was created from currency conversion. Missing regional coverage still means unknown.
+
 ## v13 — 2026-08-30
 
 Added a six-service professional and creator expansion, bringing the catalog to 42 vendors.

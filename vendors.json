@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "version": 13,
-  "updated": "2026-08-30T19:21:42Z",
+  "version": 14,
+  "updated": "2026-09-01T04:22:32Z",
   "vendors": [
     {
       "id": "netflix",
@@ -42,6 +42,30 @@
           "currency": "CAD",
           "amount": 23.99,
           "region": "CA"
+        },
+        {
+          "id": "standard_ads_monthly_us",
+          "name": "Standard with ads",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 8.99,
+          "region": "US"
+        },
+        {
+          "id": "standard_monthly_us",
+          "name": "Standard",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 19.99,
+          "region": "US"
+        },
+        {
+          "id": "premium_monthly_us",
+          "name": "Premium",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 26.99,
+          "region": "US"
         }
       ],
       "trial": {
@@ -114,6 +138,38 @@
           "currency": "CAD",
           "amount": 6.39,
           "region": "CA"
+        },
+        {
+          "id": "individual_monthly_us",
+          "name": "Premium Individual",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 12.99,
+          "region": "US"
+        },
+        {
+          "id": "duo_monthly_us",
+          "name": "Premium Duo",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 18.99,
+          "region": "US"
+        },
+        {
+          "id": "family_monthly_us",
+          "name": "Premium Family",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 21.99,
+          "region": "US"
+        },
+        {
+          "id": "student_monthly_us",
+          "name": "Premium Student",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 6.99,
+          "region": "US"
         }
       ],
       "trial": {
@@ -186,6 +242,30 @@
           "currency": "CAD",
           "amount": 169.99,
           "region": "CA"
+        },
+        {
+          "id": "standard_ads_monthly_us",
+          "name": "With Ads",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 11.99,
+          "region": "US"
+        },
+        {
+          "id": "premium_monthly_us",
+          "name": "Premium",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 18.99,
+          "region": "US"
+        },
+        {
+          "id": "premium_yearly_us",
+          "name": "Premium",
+          "cycle": "yearly",
+          "currency": "USD",
+          "amount": 189.99,
+          "region": "US"
         }
       ],
       "trial": {
@@ -290,6 +370,14 @@
           "currency": "CAD",
           "amount": 129.0,
           "region": "CA"
+        },
+        {
+          "id": "standard_monthly_us",
+          "name": "Standard",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 14.99,
+          "region": "US"
         }
       ],
       "trial": {
@@ -334,7 +422,7 @@
           "name": "Individual",
           "cycle": "monthly",
           "currency": "CAD",
-          "amount": 10.99,
+          "amount": 11.99,
           "region": "CA"
         },
         {
@@ -350,8 +438,32 @@
           "name": "Family",
           "cycle": "monthly",
           "currency": "CAD",
-          "amount": 16.99,
+          "amount": 19.99,
           "region": "CA"
+        },
+        {
+          "id": "student_monthly_us",
+          "name": "Student",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 6.99,
+          "region": "US"
+        },
+        {
+          "id": "individual_monthly_us",
+          "name": "Individual",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 11.99,
+          "region": "US"
+        },
+        {
+          "id": "family_monthly_us",
+          "name": "Family",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 19.99,
+          "region": "US"
         }
       ],
       "trial": {
@@ -373,13 +485,31 @@
           "tierId": "individual_monthly_ca",
           "currency": "CAD",
           "amount": 10.99,
-          "effectiveFrom": "2026-06-04"
+          "effectiveFrom": "2026-06-04",
+          "effectiveTo": "2026-08-30",
+          "region": "CA"
         },
         {
           "tierId": "family_monthly_ca",
           "currency": "CAD",
           "amount": 16.99,
-          "effectiveFrom": "2026-06-04"
+          "effectiveFrom": "2026-06-04",
+          "effectiveTo": "2026-08-30",
+          "region": "CA"
+        },
+        {
+          "tierId": "individual_monthly_ca",
+          "currency": "CAD",
+          "amount": 11.99,
+          "effectiveFrom": "2026-08-31",
+          "region": "CA"
+        },
+        {
+          "tierId": "family_monthly_ca",
+          "currency": "CAD",
+          "amount": 19.99,
+          "effectiveFrom": "2026-08-31",
+          "region": "CA"
         }
       ]
     },
@@ -687,6 +817,55 @@
           "currency": "CAD",
           "amount": 12.99,
           "region": "CA"
+        },
+        {
+          "id": "6tb_ca",
+          "name": "6 TB",
+          "currency": "CAD",
+          "amount": 39.99,
+          "region": "CA"
+        },
+        {
+          "id": "12tb_ca",
+          "name": "12 TB",
+          "currency": "CAD",
+          "amount": 79.99,
+          "region": "CA"
+        },
+        {
+          "id": "50gb_us",
+          "name": "50 GB",
+          "currency": "USD",
+          "amount": 0.99,
+          "region": "US"
+        },
+        {
+          "id": "200gb_us",
+          "name": "200 GB",
+          "currency": "USD",
+          "amount": 2.99,
+          "region": "US"
+        },
+        {
+          "id": "2tb_us",
+          "name": "2 TB",
+          "currency": "USD",
+          "amount": 9.99,
+          "region": "US"
+        },
+        {
+          "id": "6tb_us",
+          "name": "6 TB",
+          "currency": "USD",
+          "amount": 29.99,
+          "region": "US"
+        },
+        {
+          "id": "12tb_us",
+          "name": "12 TB",
+          "currency": "USD",
+          "amount": 59.99,
+          "region": "US"
         }
       ],
       "trial": {
@@ -1073,9 +1252,26 @@
         {
           "id": "standard_ca",
           "name": "Standard",
+          "cycle": "monthly",
           "currency": "CAD",
           "amount": 8.99,
           "region": "CA"
+        },
+        {
+          "id": "standard_monthly_us",
+          "name": "Standard",
+          "cycle": "monthly",
+          "currency": "USD",
+          "amount": 6.99,
+          "region": "US"
+        },
+        {
+          "id": "standard_yearly_us",
+          "name": "Standard",
+          "cycle": "yearly",
+          "currency": "USD",
+          "amount": 49.99,
+          "region": "US"
         }
       ],
       "trial": {

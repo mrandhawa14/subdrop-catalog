@@ -7,6 +7,7 @@ Public reference catalog of subscription services consumed by [SubDrop](https://
 - **`vendors.json`** — the catalog itself: vendor names, categories, list prices by region, cancellation playbook (URL, method, steps, retention warnings, est. time), known price history.
 - **`schema.json`** — JSON Schema describing the catalog shape. Bumps when the structure changes.
 - **`CHANGELOG.md`** — human-readable log of what changed each version.
+- **`PRICE_SOURCES.md`** - dated official sources for researched price updates.
 - **`logos/`** — a real, vendor-identifiable JPEG for every catalog entry; no service ships with a generic placeholder.
 
 ## How SubDrop uses it
