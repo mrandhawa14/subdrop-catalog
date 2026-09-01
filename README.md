@@ -7,6 +7,7 @@ Public reference catalog of subscription services consumed by [SubDrop](https://
 - **`vendors.json`** — the catalog itself: vendor names, categories, list prices by region, cancellation playbook (URL, method, steps, retention warnings, est. time), known price history.
 - **`schema.json`** — JSON Schema describing the catalog shape. Bumps when the structure changes.
 - **`CHANGELOG.md`** — human-readable log of what changed each version.
+- **`logos/`** — a real, vendor-identifiable JPEG for every catalog entry; no service ships with a generic placeholder.
 
 ## How SubDrop uses it
 
@@ -69,7 +70,7 @@ The catalog supplies *reference* prices and metadata. The user's *actual* paid a
 - **`tiers[].availableFrom` / `tiers[].retiredAt`**: optional availability window for that exact named plan. Renames and predecessor plans need separate evidence rather than a guessed backdate.
 - **`cancellation.method`**: `web` | `app` | `phone` | `email` | `unknown`.
 - **`priceHistory`**: optional effective-dated list-price observations. `effectiveTo` and `region` make a complete historical window explicit; missing history means unknown, not “same as today.”
-- **`iconName`**: SF Symbol name used until proper logo PNGs ship in v1.1.
+- **`iconName`**: accessible SF Symbol fallback if a remote logo cannot be loaded.
 
 Timeline fields are warning inputs, not hard truth about a person's account. The app may allow an earlier date for migrated or predecessor services, but it must ask the user to confirm it. Historical catalog prices are reference prices and must never silently overwrite a user-entered or receipt-observed amount.
 
@@ -85,7 +86,7 @@ Before publishing timeline or history changes, run:
 python scripts/validate_catalog.py
 ```
 
-The validator rejects impossible availability windows, unknown history tier IDs, currency mismatches, and malformed ISO dates. A valid shape does not replace source review.
+The validator rejects impossible availability windows, unknown history tier IDs, currency mismatches, malformed ISO dates, and incomplete logo coverage. A valid shape does not replace source review.
 
 ### Automated price-check helper
 

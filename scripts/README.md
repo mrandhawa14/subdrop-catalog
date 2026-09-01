@@ -14,7 +14,7 @@ python scripts/fetch-app-icons.py --limit 5  # smoke-test
 
 No external dependencies — pure stdlib. Per-vendor `SEARCH_OVERRIDES` and `COUNTRY_OVERRIDES` inside the script handle ambiguous matches (e.g. Crave is region-locked to the CA store).
 
-Vendors that don't have an App Store presence (`apple_arcade`, `icloud_plus`) are skip-listed and fall back to SF Symbol in the app.
+Services without a canonical App Store icon (`apple_arcade`, `icloud_plus`, `cursor`, and `midjourney`) use checked-in official service or brand artwork instead. `--force` preserves those files; their provenance is recorded in [`logos/SOURCES.md`](../logos/SOURCES.md).
 
 ## fetch-logos.py — Simple Icons fallback (legacy)
 

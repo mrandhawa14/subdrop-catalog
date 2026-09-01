@@ -14,7 +14,9 @@ import sys
 from datetime import date
 from pathlib import Path
 
-CATALOG_PATH = Path(__file__).resolve().parent.parent / "vendors.json"
+ROOT = Path(__file__).resolve().parent.parent
+CATALOG_PATH = ROOT / "vendors.json"
+LOGOS_DIR = ROOT / "logos"
 
 
 def parse_date(raw: str, path: str, errors: list[str]) -> date | None:
@@ -35,6 +37,14 @@ def validate(catalog: dict) -> list[str]:
         if vendor_id in seen_vendor_ids:
             errors.append(f"{prefix}: duplicate vendor id")
         seen_vendor_ids.add(vendor_id)
+
+        logo_path = LOGOS_DIR / f"{vendor_id}.jpg"
+        if not logo_path.is_file():
+            errors.append(f"{prefix}: missing logo {logo_path.relative_to(ROOT)}")
+        else:
+            logo_bytes = logo_path.read_bytes()
+            if len(logo_bytes) < 1_024 or not logo_bytes.startswith(b"\xff\xd8"):
+                errors.append(f"{prefix}: logo must be a non-empty JPEG")
 
         launched = None
         retired = None

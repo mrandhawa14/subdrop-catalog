@@ -13,9 +13,9 @@ Usage:
     python scripts/fetch-app-icons.py --force    # refetch everything
     python scripts/fetch-app-icons.py --limit 5  # smoke-test on 5
 
-Vendors that don't have a public App Store presence (Apple Arcade as a
-service, iCloud+ as a service, etc.) are silently skipped — the app
-falls back to the SF Symbol named in `iconName`.
+Services without a public App Store listing use a manually sourced official
+brand asset. Those files are preserved by this script and documented in
+`logos/SOURCES.md`.
 """
 
 from __future__ import annotations
@@ -65,28 +65,28 @@ SEARCH_OVERRIDES: dict[str, str] = {
     "adobe_creative_cloud": "Adobe Express",
 }
 
-# Some vendors have no useful App Store presence (system-bundled services,
-# regional cable providers, etc.). Skip them upfront — saves a request and
-# a misleading match.
-SKIP: set[str] = {
-    "icloud_plus",       # bundled in Settings
-    "apple_arcade",      # bundled in App Store
-    "cursor",            # no official iOS app
-    "midjourney",        # no official iOS app
+# These subscriptions do not have a canonical App Store app icon. Their
+# official service/brand artwork is checked into `logos/` instead; even a
+# forced App Store refresh must not replace it with an unrelated search hit.
+PRESERVE_OFFICIAL_ASSETS: set[str] = {
+    "icloud_plus",
+    "apple_arcade",
+    "cursor",
+    "midjourney",
 }
 
 
 def fetch_icon(vendor: dict, *, force: bool) -> tuple[str, str | None]:
     """Returns (status, matched_track_name) where status is one of
-    "fetched", "skipped", "no_match", "skip_listed", "error"."""
+    "fetched", "skipped", "no_match", "error"."""
     vid = vendor["id"]
     # Apple's artwork URLs serve JPEG payloads regardless of the extension
     # we save under. Use .jpg so the file format matches what consumers
     # (and the app's AsyncImage) expect.
     out = LOGOS_DIR / f"{vid}.jpg"
 
-    if vid in SKIP:
-        return "skip_listed", None
+    if vid in PRESERVE_OFFICIAL_ASSETS:
+        return ("skipped", None) if out.exists() else ("no_match", None)
     if out.exists() and not force:
         return "skipped", None
 
@@ -145,18 +145,18 @@ def main() -> int:
     if args.limit:
         vendors = vendors[: args.limit]
 
-    counts = {"fetched": 0, "skipped": 0, "no_match": 0, "skip_listed": 0, "error": 0}
+    counts = {"fetched": 0, "skipped": 0, "no_match": 0, "error": 0}
     for vendor in vendors:
         status, matched = fetch_icon(vendor, force=args.force)
         counts[status] += 1
         symbol = {"fetched": "✓", "skipped": "·", "no_match": "✗",
-                  "skip_listed": "—", "error": "!"}[status]
+                  "error": "!"}[status]
         suffix = f"  ← {matched}" if matched else ""
         print(f"  {symbol} {vendor['name']:<28}{suffix}")
 
     print()
     print(f"Fetched: {counts['fetched']}   Skipped (existing): {counts['skipped']}   "
-          f"Skip-listed: {counts['skip_listed']}   No match: {counts['no_match']}   "
+          f"No match: {counts['no_match']}   "
           f"Errors: {counts['error']}")
     return 0
 
